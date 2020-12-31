@@ -1,6 +1,6 @@
-package com.hedongxing.track.achievement;
+package com.hedongxing.track.model.achievement;
 
-import com.hedongxing.track.achievement.action.Action;
+import com.hedongxing.track.model.action.Action;
 
 public interface Achievement {
 

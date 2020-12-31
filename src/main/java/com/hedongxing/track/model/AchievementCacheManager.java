@@ -1,4 +1,6 @@
-package com.hedongxing.track.achievement;
+package com.hedongxing.track.model;
+
+import com.hedongxing.track.model.achievement.Achievement;
 
 import java.util.Set;
 

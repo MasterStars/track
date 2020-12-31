@@ -1,9 +1,7 @@
 package com.hedongxing.track.model;
 
-import com.hedongxing.track.achievement.AccomplishedAchievement;
-import com.hedongxing.track.achievement.Achievement;
-import com.hedongxing.track.achievement.AchievementCacheManager;
-import com.hedongxing.track.achievement.action.Action;
+import com.hedongxing.track.model.achievement.Achievement;
+import com.hedongxing.track.model.action.Action;
 
 import java.time.LocalDateTime;
 import java.util.List;

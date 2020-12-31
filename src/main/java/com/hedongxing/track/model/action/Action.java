@@ -1,4 +1,4 @@
-package com.hedongxing.track.achievement.action;
+package com.hedongxing.track.model.action;
 
 import java.time.LocalDateTime;
 

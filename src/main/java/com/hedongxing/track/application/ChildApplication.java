@@ -1,9 +1,9 @@
 package com.hedongxing.track.application;
 
-import com.hedongxing.track.achievement.action.Action;
-import com.hedongxing.track.achievement.action.DrinkMilk;
-import com.hedongxing.track.achievement.action.EatComplementaryFood;
-import com.hedongxing.track.achievement.action.Sleep;
+import com.hedongxing.track.model.action.Action;
+import com.hedongxing.track.model.action.DrinkMilk;
+import com.hedongxing.track.model.action.EatComplementaryFood;
+import com.hedongxing.track.model.action.Sleep;
 import com.hedongxing.track.model.Child;
 import org.springframework.stereotype.Service;
 

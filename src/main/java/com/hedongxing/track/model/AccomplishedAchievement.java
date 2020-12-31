@@ -1,7 +1,7 @@
-package com.hedongxing.track.achievement;
+package com.hedongxing.track.model;
 
+import com.hedongxing.track.model.achievement.Achievement;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
