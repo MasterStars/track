@@ -9,6 +9,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
+/**
+ * action产生数据变化，成就系统根据数据生成达成的成就
+ */
 @Service
 public class ChildApplication {
 
