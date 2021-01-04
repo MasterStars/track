@@ -1,10 +1,11 @@
 package com.hedongxing.track.application;
 
-import com.hedongxing.track.model.action.Action;
-import com.hedongxing.track.model.action.DrinkMilk;
-import com.hedongxing.track.model.action.EatComplementaryFood;
-import com.hedongxing.track.model.action.Sleep;
-import com.hedongxing.track.model.Child;
+import com.hedongxing.track.achievement.model.Child;
+import com.hedongxing.track.achievement.model.ChildRepository;
+import com.hedongxing.track.action.model.Action;
+import com.hedongxing.track.action.model.DrinkMilk;
+import com.hedongxing.track.action.model.EatComplementaryFood;
+import com.hedongxing.track.action.model.Sleep;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -15,21 +16,27 @@ import java.time.LocalDateTime;
 @Service
 public class ChildApplication {
 
-    public void drinkMilk(LocalDateTime time, Integer milliliter) {
-        Child duomi = new Child();
-        Action drinkMilk = new DrinkMilk(time, milliliter);
+    public void drinkMilk(LocalDateTime time, Integer milliliters) {
+        Child duomi = ChildRepository.getChild("duomi");
+        Action drinkMilk = new DrinkMilk(time, milliliters);
         duomi.complete(drinkMilk);
     }
 
     public void eatComplementartFood(LocalDateTime time, String foodName, double amount) {
-        Child duomi = new Child();
-        Action eatComplementartFood = new EatComplementaryFood(time,foodName, amount);
+        Child duomi = ChildRepository.getChild("duomi");
+        Action eatComplementartFood = new EatComplementaryFood(time, foodName, amount);
         duomi.complete(eatComplementartFood);
     }
 
     public void sleep(LocalDateTime sleepTime, LocalDateTime wakeTime){
-        Child duomi = new Child();
+        Child duomi = ChildRepository.getChild("duomi");
         Action sleep = new Sleep(sleepTime, wakeTime);
         duomi.complete(sleep);
     }
+
+    public String achievements() {
+        Child duomi = ChildRepository.getChild("duomi");
+        return duomi.printAccomplishedAchievements();
+    }
+
 }
