@@ -18,4 +18,16 @@ public abstract class Action {
     }
 
     public abstract void execute(Child child);
+
+    public void beDoneBy(Child child) {
+        execute(child);
+        file();
+    }
+
+    /**
+     * 将动作存档
+     */
+    protected void file() {
+        ActionRepository.save(this);
+    }
 }

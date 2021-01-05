@@ -42,7 +42,7 @@ public class Child {
     }
 
     public void complete(Action action) {
-        action.execute(this);
+        action.beDoneBy(this);
     }
 
     public String printAccomplishedAchievements() {
