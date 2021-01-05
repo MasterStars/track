@@ -1,30 +1,27 @@
 package com.hedongxing.track.action.model;
 
 import com.hedongxing.track.achievement.model.Child;
+import com.hedongxing.track.achievement.model.ChildProperties;
 
 import java.time.LocalDateTime;
-import java.util.Map;
 
 public class DrinkMilk extends Action {
 
-    private Integer milliliters;
+    private long milliliters;
 
-    public DrinkMilk(LocalDateTime drinkTime, Integer milliliters) {
+    public DrinkMilk(LocalDateTime drinkTime, long milliliters) {
         super("drink-milk", drinkTime);
         this.milliliters = milliliters;
     }
 
     @Override
     public void execute(Child child) {
-        Map<String, Object> childProperties = child.getProperties();
+        ChildProperties childProperties = child.getProperties();
 
-        childProperties.put("single-milk-milliliters", milliliters);
+        childProperties.put("单次喝奶量", milliliters);
 
-        Integer totalMilkMilliters = milliliters;
-        if(childProperties.containsKey("total-milk-milliliters")) {
-            totalMilkMilliters += (Integer) childProperties.get("total-milk-milliliters");
-        }
-        childProperties.put("total-milk-milliliters", totalMilkMilliters);
+        long totalMilkMilliters = milliliters + childProperties.get("喝奶总量");
+        childProperties.put("喝奶总量", totalMilkMilliters);
 
         child.updateAccomplishedAchievements();
     }

@@ -1,10 +1,10 @@
 package com.hedongxing.track.action.model;
 
 import com.hedongxing.track.achievement.model.Child;
+import com.hedongxing.track.achievement.model.ChildProperties;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.Map;
 
 public class Sleep extends Action {
 
@@ -20,17 +20,14 @@ public class Sleep extends Action {
 
     @Override
     public void execute(Child child) {
-        Map<String, Object> childProperties = child.getProperties();
+        ChildProperties childProperties = child.getProperties();
 
-        long sleepHours = Duration.between(sleepTime, wakeTime).toHours();
+        long sleepSeconds = Duration.between(sleepTime, wakeTime).getSeconds();
 
-        childProperties.put("single-sleep-hours", sleepHours);
+        childProperties.put("单次睡眠时长", sleepSeconds);
 
-        long totalHours = sleepHours;
-        if(childProperties.containsKey("total-sleep-hours")) {
-            totalHours += (Integer) childProperties.get("total-sleep-hours");
-        }
-        childProperties.put("total-sleep-hours", totalHours);
+        long totalSeconds = sleepSeconds + childProperties.get("睡眠总时长");
+        childProperties.put("睡眠总时长", totalSeconds);
 
         child.updateAccomplishedAchievements();
     }

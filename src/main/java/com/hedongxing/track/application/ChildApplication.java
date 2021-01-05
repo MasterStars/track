@@ -4,7 +4,6 @@ import com.hedongxing.track.achievement.model.Child;
 import com.hedongxing.track.achievement.model.ChildRepository;
 import com.hedongxing.track.action.model.Action;
 import com.hedongxing.track.action.model.DrinkMilk;
-import com.hedongxing.track.action.model.EatComplementaryFood;
 import com.hedongxing.track.action.model.Sleep;
 import org.springframework.stereotype.Service;
 
@@ -23,9 +22,7 @@ public class ChildApplication {
     }
 
     public void eatComplementartFood(LocalDateTime time, String foodName, double amount) {
-        Child duomi = ChildRepository.getChild("duomi");
-        Action eatComplementartFood = new EatComplementaryFood(time, foodName, amount);
-        duomi.complete(eatComplementartFood);
+
     }
 
     public void sleep(LocalDateTime sleepTime, LocalDateTime wakeTime){

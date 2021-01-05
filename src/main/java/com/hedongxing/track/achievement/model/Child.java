@@ -3,8 +3,8 @@ package com.hedongxing.track.achievement.model;
 import com.hedongxing.track.action.model.Action;
 import lombok.Getter;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -13,12 +13,16 @@ public class Child {
 
     private String name;
 
-    private Map<String, Object> properties;
+    private ChildProperties properties;
 
     private List<AccomplishedAchievement> accomplishedAchievements;
 
     public Child(String name) {
         this.name = name;
+        accomplishedAchievements = new ArrayList<>();
+        for(Property property : PropertyRepository.allPrperties()) {
+            properties.put(property, 0L);
+        }
     }
 
     public void updateAccomplishedAchievements() {
@@ -32,10 +36,6 @@ public class Child {
         }
     }
 
-    private boolean hasProperty(String key) {
-        return properties.containsKey(key);
-    }
-
     private boolean hasAlreadyAccomplished(Achievement achievement) {
         for(AccomplishedAchievement accomplishedAchievement : accomplishedAchievements) {
             if(accomplishedAchievement.getAchievement().equals(achievement)) {
@@ -46,42 +46,26 @@ public class Child {
     }
 
     private boolean achieve(Achievement achievement) {
-        Map<String, Object> achievementProperties = achievement.getProperties();
-        for(String key : achievementProperties.keySet()) {
-            Object criticalValue = achievementProperties.get(key);
-            if(!reachesTheCriticalValue(properties.get(key), criticalValue)){
+        Map<Property, Long> achievementProperties = achievement.getProperties();
+        Operator operator = achievement.getOperator();
+        switch(operator) {
+            case AND:
+                for(Property property : achievementProperties.keySet()) {
+                    if(properties.get(property) < achievementProperties.get(property)) {
+                        return false;
+                    }
+                }
+                return true;
+            case OR:
+                for(Property property : achievementProperties.keySet()) {
+                    if(properties.get(property) >= achievementProperties.get(property)) {
+                        return true;
+                    }
+                }
                 return false;
-            }
+            default:
+                return false;
         }
-        return true;
-    }
-
-    private boolean reachesTheCriticalValue(Object nowValue, Object criticalValue) {
-        if(nowValue.getClass() == Integer.class &&
-            criticalValue.getClass() == Integer.class) {
-            Integer nowVal = (Integer)nowValue;
-            Integer criticalVal = (Integer)criticalValue;
-            return nowVal >= criticalVal;
-        }
-        if(nowValue.getClass() == Float.class &&
-                criticalValue.getClass() == Float.class){
-            Float nowVal = (Float)nowValue;
-            Float criticalVal = (Float)criticalValue;
-            return nowVal >= criticalVal;
-        }
-        if(nowValue.getClass() == Double.class &&
-                criticalValue.getClass() == Double.class){
-            Double nowVal = (Double)nowValue;
-            Double criticalVal = (Double)criticalValue;
-            return nowVal >= criticalVal;
-        }
-        if(nowValue.getClass() == BigDecimal.class &&
-                criticalValue.getClass() == BigDecimal.class){
-            BigDecimal nowVal = (BigDecimal)nowValue;
-            BigDecimal criticalVal = (BigDecimal)criticalValue;
-            return nowVal.compareTo(criticalVal) > -1;
-        }
-        return false;
     }
 
     public void complete(Action action) {

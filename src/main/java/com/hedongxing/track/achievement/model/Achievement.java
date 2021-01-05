@@ -12,12 +12,22 @@ public class Achievement {
 
     private Integer score;
 
-    private Map<String, Object> properties;
+    private Map<Property, Long> properties;
 
-    public Achievement(String name, Integer score, Map<String, Object> properties) {
+    private Operator operator;
+
+    public Achievement(String name, Integer score, Map<Property, Long> properties) {
         this.name = name;
         this.score = score;
         this.properties = new HashMap<>(properties);
+        this.operator = Operator.AND;
+    }
+
+    public Achievement(String name, Integer score, Map<Property, Long> properties, Operator operator) {
+        this.name = name;
+        this.score = score;
+        this.properties = new HashMap<>(properties);
+        this.operator = operator;
     }
 
     @Override
