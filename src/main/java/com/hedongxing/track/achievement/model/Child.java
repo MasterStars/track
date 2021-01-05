@@ -6,7 +6,6 @@ import lombok.Getter;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Getter
 public class Child {
@@ -27,11 +26,8 @@ public class Child {
 
     public void updateAccomplishedAchievements() {
         for(Achievement achievement : AchievementRepository.allAchievements()) {
-            if(!hasAlreadyAccomplished(achievement) && achieve(achievement)) {
-                AccomplishedAchievement accomplishedAchievement = new AccomplishedAchievement();
-                accomplishedAchievement.setAchievement(achievement);
-                accomplishedAchievement.setAccomplishedTime(LocalDateTime.now());
-                accomplishedAchievements.add(accomplishedAchievement);
+            if(!hasAlreadyAccomplished(achievement) && achievement.isAchievedBy(properties)) {
+                accomplishedAchievements.add(new AccomplishedAchievement(achievement, LocalDateTime.now()));
             }
         }
     }
@@ -45,34 +41,12 @@ public class Child {
         return false;
     }
 
-    private boolean achieve(Achievement achievement) {
-        Map<Property, Long> achievementProperties = achievement.getProperties();
-        Operator operator = achievement.getOperator();
-        switch(operator) {
-            case AND:
-                for(Property property : achievementProperties.keySet()) {
-                    if(properties.get(property) < achievementProperties.get(property)) {
-                        return false;
-                    }
-                }
-                return true;
-            case OR:
-                for(Property property : achievementProperties.keySet()) {
-                    if(properties.get(property) >= achievementProperties.get(property)) {
-                        return true;
-                    }
-                }
-                return false;
-            default:
-                return false;
-        }
-    }
-
     public void complete(Action action) {
         action.execute(this);
     }
 
     public String printAccomplishedAchievements() {
+        updateAccomplishedAchievements();
         String accomplishedAchievementsPrinter = name + "成就榜: " + "\n";
         int points = 0;
         for(AccomplishedAchievement accomplishedAchievement : accomplishedAchievements) {

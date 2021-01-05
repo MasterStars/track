@@ -1,9 +1,11 @@
 package com.hedongxing.track.action.model;
 
 import com.hedongxing.track.achievement.model.Child;
+import lombok.Getter;
 
 import java.time.LocalDateTime;
 
+@Getter
 public abstract class Action {
 
     private String name;

@@ -7,10 +7,12 @@ import java.time.LocalDateTime;
 
 public class DrinkMilk extends Action {
 
+    public static final String DRINK_MILK_CODE = "drink-milk";
+
     private long milliliters;
 
     public DrinkMilk(LocalDateTime drinkTime, long milliliters) {
-        super("drink-milk", drinkTime);
+        super(DRINK_MILK_CODE, drinkTime);
         this.milliliters = milliliters;
     }
 
@@ -22,7 +24,5 @@ public class DrinkMilk extends Action {
 
         long totalMilkMilliters = milliliters + childProperties.get("喝奶总量");
         childProperties.put("喝奶总量", totalMilkMilliters);
-
-        child.updateAccomplishedAchievements();
     }
 }

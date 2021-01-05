@@ -12,22 +12,12 @@ public class Achievement {
 
     private Integer score;
 
-    private Map<Property, Long> properties;
+    private AchievementRequirements achievementRequirements;
 
-    private Operator operator;
-
-    public Achievement(String name, Integer score, Map<Property, Long> properties) {
+    public Achievement(String name, Integer score, AchievementRequirements achievementRequirements) {
         this.name = name;
         this.score = score;
-        this.properties = new HashMap<>(properties);
-        this.operator = Operator.AND;
-    }
-
-    public Achievement(String name, Integer score, Map<Property, Long> properties, Operator operator) {
-        this.name = name;
-        this.score = score;
-        this.properties = new HashMap<>(properties);
-        this.operator = operator;
+        this.achievementRequirements = achievementRequirements;
     }
 
     @Override
@@ -37,5 +27,9 @@ public class Achievement {
             return achievement.getName().equals(name);
         }
         return false;
+    }
+
+    public boolean isAchievedBy(ChildProperties childProperties) {
+        return achievementRequirements.isFulfilledBy(childProperties.getProperties());
     }
 }

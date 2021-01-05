@@ -1,10 +1,12 @@
 package com.hedongxing.track.achievement.model;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 import java.time.LocalDateTime;
 
-@Data
+@Getter
+@AllArgsConstructor
 public class AccomplishedAchievement {
 
     private Achievement achievement;

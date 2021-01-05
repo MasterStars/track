@@ -8,12 +8,14 @@ import java.time.LocalDateTime;
 
 public class Sleep extends Action {
 
+    private static final String SLEEP_CODE = "sleep";
+
     private LocalDateTime sleepTime;
 
     private LocalDateTime wakeTime;
 
     public Sleep(LocalDateTime sleepTime, LocalDateTime wakeTime) {
-        super("sleep", sleepTime);
+        super(SLEEP_CODE, sleepTime);
         this.sleepTime = sleepTime;
         this.wakeTime = wakeTime;
     }
@@ -29,6 +31,5 @@ public class Sleep extends Action {
         long totalSeconds = sleepSeconds + childProperties.get("睡眠总时长");
         childProperties.put("睡眠总时长", totalSeconds);
 
-        child.updateAccomplishedAchievements();
     }
 }

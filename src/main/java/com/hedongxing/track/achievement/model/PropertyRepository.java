@@ -10,6 +10,9 @@ public class PropertyRepository {
     private static Map<String, Property> properties = new HashMap<>();
 
     public PropertyRepository() {
+        properties.put("体重", new Property("体重", "克"));
+        properties.put("身高", new Property("身高", "厘米"));
+
         properties.put("单次睡眠时长", new Property("单次睡眠时长", "秒"));
         properties.put("睡眠总时长", new Property("睡眠总时长", "秒"));
         properties.put("单次喝奶量", new Property("单次喝奶量", "毫升"));
