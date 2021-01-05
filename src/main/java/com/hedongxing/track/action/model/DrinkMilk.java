@@ -25,4 +25,9 @@ public class DrinkMilk extends Action {
         long totalMilkMilliters = milliliters + childProperties.get("喝奶总量");
         childProperties.put("喝奶总量", totalMilkMilliters);
     }
+
+    @Override
+    public String printDetail() {
+        return getActionTime() + ": 喝奶" + milliliters + "毫升";
+    }
 }

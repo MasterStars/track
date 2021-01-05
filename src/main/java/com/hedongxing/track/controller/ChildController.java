@@ -22,4 +22,9 @@ public class ChildController {
     public String achievements() {
         return childApplication.achievements();
     }
+
+    @GetMapping("/actions")
+    public String actions() {
+        return childApplication.actions();
+    }
 }

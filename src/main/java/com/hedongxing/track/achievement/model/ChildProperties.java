@@ -1,7 +1,5 @@
 package com.hedongxing.track.achievement.model;
 
-import com.sun.javafx.collections.UnmodifiableObservableMap;
-
 import java.util.Collections;
 import java.util.Map;
 

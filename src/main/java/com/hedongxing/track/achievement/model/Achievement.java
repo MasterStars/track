@@ -2,9 +2,6 @@ package com.hedongxing.track.achievement.model;
 
 import lombok.Data;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @Data
 public class Achievement {
 

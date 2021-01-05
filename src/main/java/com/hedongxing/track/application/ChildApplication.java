@@ -36,4 +36,9 @@ public class ChildApplication {
         return duomi.printAccomplishedAchievements();
     }
 
+    public String actions() {
+        Child duomi = ChildRepository.getChild("duomi");
+        return duomi.printActionDetails();
+    }
+
 }

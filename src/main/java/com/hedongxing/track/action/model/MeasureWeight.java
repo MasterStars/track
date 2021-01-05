@@ -19,4 +19,9 @@ public class MeasureWeight extends Action {
     public void execute(Child child) {
         child.getProperties().put("体重", gram);
     }
+
+    @Override
+    public String printDetail() {
+        return getActionTime() + ": 量体重" + gram*2/1000 + "斤";
+    }
 }

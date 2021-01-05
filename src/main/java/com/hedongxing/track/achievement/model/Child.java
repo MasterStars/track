@@ -1,6 +1,7 @@
 package com.hedongxing.track.achievement.model;
 
 import com.hedongxing.track.action.model.Action;
+import com.hedongxing.track.action.model.ActionRepository;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -55,5 +56,14 @@ public class Child {
         }
         accomplishedAchievementsPrinter += "当前成就分: " + points;
         return accomplishedAchievementsPrinter;
+    }
+
+    public String printActionDetails() {
+        StringBuilder details = new StringBuilder();
+        for(Action action : ActionRepository.allActions()) {
+            details.append(action.printDetail());
+            details.append("\n");
+        }
+        return details.toString();
     }
 }

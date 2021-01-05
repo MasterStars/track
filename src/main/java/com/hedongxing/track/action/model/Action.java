@@ -17,12 +17,20 @@ public abstract class Action {
         this.actionTime = actionTime;
     }
 
-    public abstract void execute(Child child);
-
+    /**
+     * 完成动作
+     * @param child
+     */
     public void beDoneBy(Child child) {
         execute(child);
         file();
     }
+
+    /**
+     * 动作执行
+     * @param child
+     */
+    public abstract void execute(Child child);
 
     /**
      * 将动作存档
@@ -30,4 +38,10 @@ public abstract class Action {
     protected void file() {
         ActionRepository.save(this);
     }
+
+    /**
+     * 打印动作详情
+     * @return
+     */
+    public abstract String printDetail();
 }

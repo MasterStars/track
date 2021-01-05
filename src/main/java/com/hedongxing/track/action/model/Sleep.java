@@ -32,4 +32,9 @@ public class Sleep extends Action {
         childProperties.put("睡眠总时长", totalSeconds);
 
     }
+
+    @Override
+    public String printDetail() {
+        return sleepTime + "---" + wakeTime + ": 睡觉" + Duration.between(sleepTime, wakeTime).toHours() + "小时";
+    }
 }

@@ -1,19 +1,24 @@
 package com.hedongxing.track.action.model;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ActionRepository {
 
     private static Map<String, List<Action>> actionMap = new HashMap<>();
 
+    private static List<Action> sortedActions = new LinkedList<>();
+
     public static List<Action> findActionRecordsOf(String actionName) {
         return actionMap.get(actionName);
     }
 
+    public static List<Action> allActions() {
+        return sortedActions;
+    }
+
     public static void save(Action action) {
+        sortedActions.add(action);
+
         List<Action> actions;
         if(actionMap.containsKey(action.getName())) {
             actions = actionMap.get(action.getName());

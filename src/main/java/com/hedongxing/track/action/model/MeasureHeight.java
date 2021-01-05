@@ -1,7 +1,6 @@
 package com.hedongxing.track.action.model;
 
 import com.hedongxing.track.achievement.model.Child;
-import com.hedongxing.track.achievement.model.ChildProperties;
 
 import java.time.LocalDateTime;
 
@@ -19,5 +18,10 @@ public class MeasureHeight extends Action {
     @Override
     public void execute(Child child) {
         child.getProperties().put("身高", centimeter);
+    }
+
+    @Override
+    public String printDetail() {
+        return getActionTime() + ": 测量身高" + centimeter + "公分";
     }
 }

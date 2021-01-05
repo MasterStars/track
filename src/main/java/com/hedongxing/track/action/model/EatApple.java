@@ -12,9 +12,13 @@ public class EatApple extends EatFruit {
         super(eatTime, "apple", amount);
     }
 
-
     @Override
     public void execute(Child child) {
         updateHasEatenFruitCategories(child);
+    }
+
+    @Override
+    public String printDetail() {
+        return getActionTime() + ": 吃苹果" + getAmount() + "个";
     }
 }
