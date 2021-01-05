@@ -1,4 +1,4 @@
-package com.hedongxing.track.achievement.po;
+package com.hedongxing.track.achievement.infrastructure.po;
 
 import lombok.AccessLevel;
 import lombok.Data;
@@ -14,5 +14,5 @@ public class ChildPropertyPO {
 
     String propertyId;
 
-    String value;
+    Long value;
 }

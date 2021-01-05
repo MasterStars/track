@@ -1,4 +1,4 @@
-package com.hedongxing.track.achievement.po;
+package com.hedongxing.track.achievement.infrastructure.po;
 
 import lombok.AccessLevel;
 import lombok.Data;
@@ -6,13 +6,11 @@ import lombok.experimental.FieldDefaults;
 
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class AchievementPO {
+public class PropertyPO {
 
     String id;
 
     String name;
 
-    Integer score;
-
-    String description;
+    String unit;
 }
