@@ -16,7 +16,7 @@ public class EatBanana extends EatFruit {
     @Override
     public void execute(Child child) {
         ChildProperties childProperties = child.getProperties();
-        childProperties.put("单次吃香蕉个数", getAmount());
+        childProperties.update("单次吃香蕉个数", getAmount());
 
         updateHasEatenFruitCategories(child);
     }

@@ -1,30 +1,43 @@
 package com.hedongxing.track.controller;
 
 import com.hedongxing.track.application.ChildApplication;
-import com.hedongxing.track.dto.SleepDTO;
+import com.hedongxing.track.infrastructure.dto.SaveChildDTO;
+import com.hedongxing.track.infrastructure.dto.SleepDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/child")
+@RequestMapping("/children")
 @RequiredArgsConstructor
 public class ChildController {
 
     private final ChildApplication childApplication;
 
-    @PostMapping("/sleep")
-    public String sleep(@RequestBody SleepDTO sleepDTO) {
-        childApplication.sleep(sleepDTO.getSleepTime(), sleepDTO.getWakeTime());
+    @PostMapping
+    public String addChild(@RequestBody SaveChildDTO saveChildDTO) {
+        childApplication.saveChildPO(null, saveChildDTO);
+        return "添加child完成";
+    }
+
+    @PutMapping("/{childId}")
+    public String updateChild(@PathVariable String childId, @RequestBody SaveChildDTO saveChildDTO) {
+        childApplication.saveChildPO(childId, saveChildDTO);
+        return "更新child完成";
+    }
+
+    @PostMapping("/{childId}/sleep")
+    public String sleep(@PathVariable String childId, @RequestBody SleepDTO sleepDTO) {
+        childApplication.sleep(childId, sleepDTO.getSleepTime(), sleepDTO.getWakeTime());
         return "宝宝进入睡眠...";
     }
 
-    @GetMapping("/achievements")
-    public String achievements() {
-        return childApplication.achievements();
+    @GetMapping("/{childId}/achievements")
+    public String achievements(@PathVariable String childId) {
+        return childApplication.achievements(childId);
     }
 
-    @GetMapping("/actions")
-    public String actions() {
-        return childApplication.actions();
+    @GetMapping("/{childId}/actions")
+    public String actions(@PathVariable String childId) {
+        return childApplication.outputActions(childId);
     }
 }

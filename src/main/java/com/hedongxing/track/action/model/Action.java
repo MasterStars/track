@@ -22,7 +22,11 @@ public abstract class Action {
      * @param child
      */
     public void beDoneBy(Child child) {
+
         execute(child);
+
+        child.updateAccomplishedAchievements();;
+
         file();
     }
 
@@ -35,7 +39,7 @@ public abstract class Action {
     /**
      * 将动作存档
      */
-    protected void file() {
+    private void file() {
         ActionRepository.save(this);
     }
 

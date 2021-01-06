@@ -26,10 +26,10 @@ public class Sleep extends Action {
 
         long sleepSeconds = Duration.between(sleepTime, wakeTime).getSeconds();
 
-        childProperties.put("单次睡眠时长", sleepSeconds);
+        childProperties.update("单次睡眠时长", sleepSeconds);
 
         long totalSeconds = sleepSeconds + childProperties.get("睡眠总时长");
-        childProperties.put("睡眠总时长", totalSeconds);
+        childProperties.update("睡眠总时长", totalSeconds);
 
     }
 

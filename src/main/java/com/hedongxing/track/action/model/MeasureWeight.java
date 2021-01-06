@@ -17,7 +17,7 @@ public class MeasureWeight extends Action {
 
     @Override
     public void execute(Child child) {
-        child.getProperties().put("体重", gram);
+        child.getProperties().update("体重", gram);
     }
 
     @Override

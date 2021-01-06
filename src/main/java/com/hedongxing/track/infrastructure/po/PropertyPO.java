@@ -1,4 +1,4 @@
-package com.hedongxing.track.achievement.infrastructure.po;
+package com.hedongxing.track.infrastructure.po;
 
 import lombok.AccessLevel;
 import lombok.Data;

@@ -35,6 +35,6 @@ public abstract class EatFruit extends Action {
         if(!eatenFruitNames.contains(getFruitName())) {
             fruitCategories ++;
         }
-        child.getProperties().put("水果食用种类", fruitCategories);
+        child.getProperties().update("水果食用种类", fruitCategories);
     }
 }

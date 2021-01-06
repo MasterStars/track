@@ -1,37 +1,31 @@
 package com.hedongxing.track.achievement.model;
 
+import com.hedongxing.track.achievement.infrastructure.persistence.PropertyRepositoryImpl;
+import com.hedongxing.track.infrastructure.util.SpringBeanUtil;
+
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
 public class PropertyRepository {
 
-    private static Map<String, Property> properties = new HashMap<>();
+    private static Map<String, Property> propertyMap = new HashMap<>();
 
     public PropertyRepository() {
-        properties.put("体重", new Property("体重", "克"));
-        properties.put("身高", new Property("身高", "厘米"));
-
-        properties.put("单次睡眠时长", new Property("单次睡眠时长", "秒"));
-        properties.put("睡眠总时长", new Property("睡眠总时长", "秒"));
-        properties.put("单次喝奶量", new Property("单次喝奶量", "毫升"));
-        properties.put("喝奶总量", new Property("喝奶总量", "毫升"));
-        properties.put("肉类总食用量", new Property("肉类总食用量", "毫克"));
-        properties.put("蔬菜食用种类", new Property("蔬菜食用种类", "种"));
-        properties.put("水果食用种类", new Property("水果食用种类", "种"));
-        properties.put("单次吃香蕉个数", new Property("单次吃香蕉个数", "个"));
+        Set<Property> properties = SpringBeanUtil.getBean(PropertyRepositoryImpl.class).allProperties();
+        for(Property property : properties) {
+            propertyMap.put(property.getName(), property);
+        }
     }
 
     public static Set<Property> allPrperties() {
-        return new HashSet<>(properties.values());
+        return Collections.unmodifiableSet((Set<Property>) propertyMap.values());
     }
 
-
-
     public static Property getProperty(String name) {
-        if(properties.containsKey(name)){
-            return properties.get(name);
+        if(propertyMap.containsKey(name)){
+            return propertyMap.get(name);
         }
         throw new RuntimeException("no such property in repository!");
     }

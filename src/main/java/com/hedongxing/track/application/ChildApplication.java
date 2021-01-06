@@ -1,44 +1,61 @@
 package com.hedongxing.track.application;
 
+import com.hedongxing.track.achievement.infrastructure.persistence.ChildRepositoryImpl;
 import com.hedongxing.track.achievement.model.Child;
-import com.hedongxing.track.achievement.model.ChildRepository;
 import com.hedongxing.track.action.model.Action;
 import com.hedongxing.track.action.model.DrinkMilk;
 import com.hedongxing.track.action.model.Sleep;
+import com.hedongxing.track.infrastructure.dto.SaveChildDTO;
+import com.hedongxing.track.infrastructure.mapper.ChildMapper;
+import com.hedongxing.track.infrastructure.po.ChildPO;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
-/**
- * action产生数据变化，成就系统根据数据生成达成的成就
- */
 @Service
+@RequiredArgsConstructor
 public class ChildApplication {
 
-    public void drinkMilk(LocalDateTime time, Integer milliliters) {
-        Child duomi = ChildRepository.getChild("duomi");
+    private final ChildRepositoryImpl childRepository;
+
+    private final ChildMapper childMapper;
+
+    public void saveChildPO(String childId, SaveChildDTO saveChildDTO) {
+        ChildPO childPO = new ChildPO();
+        String id = childId;
+        if(!StringUtils.hasLength(id)) {
+            id = UUID.randomUUID().toString();
+        }
+        childPO.setId(id);
+        childPO.setName(saveChildDTO.getName());
+        childPO.setAge(saveChildDTO.getAge());
+        childPO.setSex(saveChildDTO.getSex());
+        childMapper.insert(childPO);
+    }
+
+    public void drinkMilk(String childId, LocalDateTime time, Integer milliliters) {
+        Child child = childRepository.getChildById(childId);
         Action drinkMilk = new DrinkMilk(time, milliliters);
-        duomi.complete(drinkMilk);
+        child.complete(drinkMilk);
     }
 
-    public void eatComplementartFood(LocalDateTime time, String foodName, double amount) {
-
-    }
-
-    public void sleep(LocalDateTime sleepTime, LocalDateTime wakeTime){
-        Child duomi = ChildRepository.getChild("duomi");
+    public void sleep(String childId, LocalDateTime sleepTime, LocalDateTime wakeTime){
+        Child child = childRepository.getChildById(childId);
         Action sleep = new Sleep(sleepTime, wakeTime);
-        duomi.complete(sleep);
+        child.complete(sleep);
     }
 
-    public String achievements() {
-        Child duomi = ChildRepository.getChild("duomi");
-        return duomi.printAccomplishedAchievements();
+    public String achievements(String childId) {
+        Child child = childRepository.getChildById(childId);
+        return child.printAccomplishedAchievements();
     }
 
-    public String actions() {
-        Child duomi = ChildRepository.getChild("duomi");
-        return duomi.printActionDetails();
+    public String outputActions(String childId) {
+        Child child = childRepository.getChildById(childId);
+        return child.printActionDetails();
     }
 
 }

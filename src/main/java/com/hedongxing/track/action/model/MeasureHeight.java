@@ -17,7 +17,7 @@ public class MeasureHeight extends Action {
 
     @Override
     public void execute(Child child) {
-        child.getProperties().put("身高", centimeter);
+        child.getProperties().update("身高", centimeter);
     }
 
     @Override

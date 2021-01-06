@@ -1,4 +1,4 @@
-package com.hedongxing.track.achievement.infrastructure.po;
+package com.hedongxing.track.infrastructure.po;
 
 import lombok.AccessLevel;
 import lombok.Data;
@@ -6,13 +6,14 @@ import lombok.experimental.FieldDefaults;
 
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ChildPropertyPO {
+public class ChildPO {
 
     String id;
 
-    String childId;
+    String name;
 
-    String propertyId;
+    Integer age;
 
-    Long value;
+    Integer sex;
+
 }

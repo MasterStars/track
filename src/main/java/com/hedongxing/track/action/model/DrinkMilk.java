@@ -20,10 +20,10 @@ public class DrinkMilk extends Action {
     public void execute(Child child) {
         ChildProperties childProperties = child.getProperties();
 
-        childProperties.put("单次喝奶量", milliliters);
+        childProperties.update("单次喝奶量", milliliters);
 
         long totalMilkMilliters = milliliters + childProperties.get("喝奶总量");
-        childProperties.put("喝奶总量", totalMilkMilliters);
+        childProperties.update("喝奶总量", totalMilkMilliters);
     }
 
     @Override
