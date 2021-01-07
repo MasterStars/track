@@ -1,9 +1,11 @@
 package com.hedongxing.track.action.model;
 
 import com.hedongxing.track.achievement.model.Child;
+import lombok.Getter;
 
 import java.time.LocalDateTime;
 
+@Getter
 public class EatApple extends EatFruit {
 
     public static final String EAT_APPLE_CODE = "eat-apple";

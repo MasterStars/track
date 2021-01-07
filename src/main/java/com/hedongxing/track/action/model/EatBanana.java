@@ -1,10 +1,11 @@
 package com.hedongxing.track.action.model;
 
 import com.hedongxing.track.achievement.model.Child;
-import com.hedongxing.track.achievement.model.ChildProperties;
+import lombok.Getter;
 
 import java.time.LocalDateTime;
 
+@Getter
 public class EatBanana extends EatFruit {
 
     public static final String EAT_BANANA_CODE = "eat-banana";
@@ -15,8 +16,7 @@ public class EatBanana extends EatFruit {
 
     @Override
     public void execute(Child child) {
-        ChildProperties childProperties = child.getProperties();
-        childProperties.update("单次吃香蕉个数", getAmount());
+        child.updateProperties("单次吃香蕉个数", getAmount());
 
         updateHasEatenFruitCategories(child);
     }

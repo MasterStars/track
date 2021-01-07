@@ -2,10 +2,12 @@ package com.hedongxing.track.action.model;
 
 import com.hedongxing.track.achievement.model.Child;
 import com.hedongxing.track.achievement.model.ChildProperties;
+import lombok.Getter;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
 
+@Getter
 public class Sleep extends Action {
 
     private static final String SLEEP_CODE = "sleep";
@@ -26,10 +28,10 @@ public class Sleep extends Action {
 
         long sleepSeconds = Duration.between(sleepTime, wakeTime).getSeconds();
 
-        childProperties.update("单次睡眠时长", sleepSeconds);
+        child.updateProperties("单次睡眠时长", sleepSeconds);
 
         long totalSeconds = sleepSeconds + childProperties.get("睡眠总时长");
-        childProperties.update("睡眠总时长", totalSeconds);
+        child.updateProperties("睡眠总时长", totalSeconds);
 
     }
 

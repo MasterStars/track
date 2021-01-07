@@ -1,16 +1,15 @@
 package com.hedongxing.track.achievement.model;
 
 import com.hedongxing.track.achievement.infrastructure.event.AchievementAccomplishedEvent;
+import com.hedongxing.track.achievement.infrastructure.event.ActionCompletedEvent;
+import com.hedongxing.track.achievement.infrastructure.event.ChildPropertyUpdatedEvent;
 import com.hedongxing.track.action.model.Action;
 import com.hedongxing.track.action.model.ActionRepository;
 import com.hedongxing.track.infrastructure.util.SpringBeanUtil;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @Getter
 public class Child {
@@ -23,6 +22,8 @@ public class Child {
 
     private AccomplishedAchievements accomplishedAchievements;
 
+    private List<Action> actionRecords;
+
     private Child(String id, String name) {
         this.id = id;
         this.name = name;
@@ -30,22 +31,28 @@ public class Child {
         for(Property property : PropertyRepository.allPrperties()) {
             propertyMap.put(property, 0L);
         }
-        properties = new ChildProperties(id, propertyMap);
+        properties = new ChildProperties(propertyMap);
         accomplishedAchievements = new AccomplishedAchievements(new ArrayList<>());
+        actionRecords = new LinkedList<>();
     }
 
-    public Child(String id, String name, ChildProperties properties, AccomplishedAchievements accomplishedAchievements) {
+    public Child(String id,
+                 String name,
+                 ChildProperties properties,
+                 AccomplishedAchievements accomplishedAchievements,
+                 List<Action> actionRecords) {
         this.id = id;
         this.name = name;
         this.properties = properties;
         this.accomplishedAchievements = accomplishedAchievements;
+        this.actionRecords = actionRecords;
     }
 
     public static Child newChild(String name) {
         return new Child(UUID.randomUUID().toString(), name);
     }
 
-    public void updateAccomplishedAchievements() {
+    private void updateAccomplishedAchievements() {
         for(Achievement achievement : AchievementRepository.allAchievements()) {
             if(!hasAlreadyAccomplished(achievement) && achievement.isAchievedBy(properties)) {
                 accomplishedAchievements.addNewAchievement(achievement);
@@ -63,8 +70,22 @@ public class Child {
         return false;
     }
 
+    public void updateProperties(String propertyName, long value) {
+        properties.update(propertyName, value);
+        SpringBeanUtil.publishEvent(new ChildPropertyUpdatedEvent(this, id, PropertyRepository.getProperty(propertyName), value));
+    }
+
     public void complete(Action action) {
         action.beDoneBy(this);
+
+        updateAccomplishedAchievements();
+
+        recordAction(action);
+    }
+
+    private void recordAction(Action action) {
+        actionRecords.add(action);
+        SpringBeanUtil.publishEvent(new ActionCompletedEvent(this, id, action));
     }
 
     public String printAccomplishedAchievements() {

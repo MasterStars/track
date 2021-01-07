@@ -6,7 +6,7 @@ import lombok.Getter;
 import java.time.LocalDateTime;
 
 @Getter
-public abstract class Action {
+public abstract class Action implements Comparable<Action> {
 
     private String name;
 
@@ -22,12 +22,7 @@ public abstract class Action {
      * @param child
      */
     public void beDoneBy(Child child) {
-
         execute(child);
-
-        child.updateAccomplishedAchievements();;
-
-        file();
     }
 
     /**
@@ -37,15 +32,17 @@ public abstract class Action {
     public abstract void execute(Child child);
 
     /**
-     * 将动作存档
-     */
-    private void file() {
-        ActionRepository.save(this);
-    }
-
-    /**
      * 打印动作详情
      * @return
      */
     public abstract String printDetail();
+
+    @Override
+    public int compareTo(Action o) {
+        if(getActionTime().isBefore(o.getActionTime())) {
+            return -1;
+        }else{
+            return 1;
+        }
+    }
 }

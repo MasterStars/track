@@ -1,9 +1,11 @@
 package com.hedongxing.track.action.model;
 
 import com.hedongxing.track.achievement.model.Child;
+import lombok.Getter;
 
 import java.time.LocalDateTime;
 
+@Getter
 public class MeasureHeight extends Action {
 
     private static final String MEASURE_HEIGHT_CODE = "measure-height";
@@ -17,7 +19,7 @@ public class MeasureHeight extends Action {
 
     @Override
     public void execute(Child child) {
-        child.getProperties().update("身高", centimeter);
+        child.updateProperties("身高", centimeter);
     }
 
     @Override

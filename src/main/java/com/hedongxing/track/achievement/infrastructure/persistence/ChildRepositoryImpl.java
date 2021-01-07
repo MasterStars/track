@@ -2,6 +2,7 @@ package com.hedongxing.track.achievement.infrastructure.persistence;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.hedongxing.track.achievement.model.*;
+import com.hedongxing.track.action.infrastructure.persistence.ActionRepositoryImpl;
 import com.hedongxing.track.infrastructure.mapper.ChildAchievementMapper;
 import com.hedongxing.track.infrastructure.mapper.ChildMapper;
 import com.hedongxing.track.infrastructure.mapper.ChildPropertyMapper;
@@ -30,6 +31,8 @@ public class ChildRepositoryImpl {
 
     private final AchievementRepositoryImpl achievementRepository;
 
+    private final ActionRepositoryImpl actionRepository;
+
     public Child getChildById(String id) {
         ChildPO childPO = childMapper.selectById(id);
         List<ChildPropertyPO> childPropertyPOS = childPropertyMapper.selectList(
@@ -41,7 +44,7 @@ public class ChildRepositoryImpl {
         for(ChildPropertyPO childPropertyPO : childPropertyPOS) {
             properties.put(propertyRepository.getPropertyById(childPropertyPO.getPropertyId()), childPropertyPO.getValue());
         }
-        ChildProperties childProperties = new ChildProperties(id, properties);
+        ChildProperties childProperties = new ChildProperties(properties);
 
         List<AccomplishedAchievement> accomplishedAchievements = new ArrayList<>();
         for(ChildAchievementPO childAchievementPO :childAchievementPOS) {
@@ -52,7 +55,11 @@ public class ChildRepositoryImpl {
             accomplishedAchievements.add(accomplishedAchievement);
         }
 
-        return new Child(childPO.getId(), childPO.getName(), childProperties, new AccomplishedAchievements(accomplishedAchievements));
+        return new Child(childPO.getId(),
+                childPO.getName(),
+                childProperties,
+                new AccomplishedAchievements(accomplishedAchievements),
+                actionRepository.getChildAllActionsOrderedAsc(childPO.getId()));
     }
 
     public void saveChild(Child child) {
