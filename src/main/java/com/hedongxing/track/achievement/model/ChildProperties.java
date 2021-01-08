@@ -11,6 +11,20 @@ public class ChildProperties {
         this.properties = properties;
     }
 
+    public void gainProperty(Property property, long value) {
+        long newValue = value;
+        if(properties.containsKey(property)) {
+            newValue += properties.get(property);
+        }
+        properties.put(property, newValue);
+    }
+
+    public void gainProperties(Map<Property, Long> gainedProperties) {
+        for(Property property : gainedProperties.keySet()) {
+            gainProperty(property, gainedProperties.get(property));
+        }
+    }
+
     public void update(String propertyName, long value) {
         properties.put(PropertyRepository.getProperty(propertyName), value);
     }

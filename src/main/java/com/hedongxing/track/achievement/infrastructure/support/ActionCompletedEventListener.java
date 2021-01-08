@@ -1,7 +1,7 @@
 package com.hedongxing.track.achievement.infrastructure.support;
 
 import com.hedongxing.track.achievement.infrastructure.event.ActionCompletedEvent;
-import com.hedongxing.track.action.infrastructure.persistence.ActionRepositoryImpl;
+import com.hedongxing.track.achievement.infrastructure.persistence.ActionRepositoryImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
@@ -14,6 +14,6 @@ public class ActionCompletedEventListener implements ApplicationListener<ActionC
 
     @Override
     public void onApplicationEvent(ActionCompletedEvent event) {
-        actionRepository.saveAction(event.getChildId(), event.getAction());
+
     }
 }

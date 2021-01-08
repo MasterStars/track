@@ -6,12 +6,13 @@ import lombok.experimental.FieldDefaults;
 
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ActionPO {
+public class ActionPropertyPO {
 
     String id;
 
-    String name;
+    String actionId;
 
-    String actionDetail;
+    String propertyId;
 
+    Long value;
 }

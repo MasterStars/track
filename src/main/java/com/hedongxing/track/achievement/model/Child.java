@@ -3,8 +3,6 @@ package com.hedongxing.track.achievement.model;
 import com.hedongxing.track.achievement.infrastructure.event.AchievementAccomplishedEvent;
 import com.hedongxing.track.achievement.infrastructure.event.ActionCompletedEvent;
 import com.hedongxing.track.achievement.infrastructure.event.ChildPropertyUpdatedEvent;
-import com.hedongxing.track.action.model.Action;
-import com.hedongxing.track.action.model.ActionRepository;
 import com.hedongxing.track.infrastructure.util.SpringBeanUtil;
 import lombok.Getter;
 
@@ -22,8 +20,6 @@ public class Child {
 
     private AccomplishedAchievements accomplishedAchievements;
 
-    private List<Action> actionRecords;
-
     private Child(String id, String name) {
         this.id = id;
         this.name = name;
@@ -33,19 +29,16 @@ public class Child {
         }
         properties = new ChildProperties(propertyMap);
         accomplishedAchievements = new AccomplishedAchievements(new ArrayList<>());
-        actionRecords = new LinkedList<>();
     }
 
     public Child(String id,
                  String name,
                  ChildProperties properties,
-                 AccomplishedAchievements accomplishedAchievements,
-                 List<Action> actionRecords) {
+                 AccomplishedAchievements accomplishedAchievements) {
         this.id = id;
         this.name = name;
         this.properties = properties;
         this.accomplishedAchievements = accomplishedAchievements;
-        this.actionRecords = actionRecords;
     }
 
     public static Child newChild(String name) {
@@ -77,20 +70,23 @@ public class Child {
 
     public void complete(Action action) {
 
-        action.execute(this);
+        doAction(action);
 
         updateAccomplishedAchievements();
 
         recordAction(action);
     }
 
+    private void doAction(Action action) {
+        Map<Property, Long> gainedProperties = action.getGainedProperties();
+        properties.gainProperties(gainedProperties);
+    }
+
     private void recordAction(Action action) {
-        actionRecords.add(action);
         SpringBeanUtil.publishEvent(new ActionCompletedEvent(this, id, action));
     }
 
     public String printAccomplishedAchievements() {
-        updateAccomplishedAchievements();
         String accomplishedAchievementsPrinter = name + "成就榜: " + "\n";
         int points = 0;
         for(AccomplishedAchievement accomplishedAchievement : accomplishedAchievements.getAccomplishedAchievements()) {
@@ -102,9 +98,10 @@ public class Child {
     }
 
     public String printActionDetails() {
+        List<Action> actionRecords = ActionRepository.getChildActions(id);
         StringBuilder details = new StringBuilder();
-        for(Action action : ActionRepository.allActions()) {
-            details.append(action.printDetail());
+        for(Action action : actionRecords) {
+            details.append(action.getActionTime() + ": " + name + "完成<" + action.getName() + ">");
             details.append("\n");
         }
         return details.toString();
