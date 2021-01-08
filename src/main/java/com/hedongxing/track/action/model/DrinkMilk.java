@@ -32,4 +32,5 @@ public class DrinkMilk extends Action {
     public String printDetail() {
         return getActionTime() + ": 喝奶" + milliliters + "毫升";
     }
+
 }

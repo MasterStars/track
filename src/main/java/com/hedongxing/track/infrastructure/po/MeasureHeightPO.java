@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class MeasureHeightPO extends ActionPO {
 
-    Integer centimeter;
+    Long centimeter;
 
     LocalDateTime measureTime;
 

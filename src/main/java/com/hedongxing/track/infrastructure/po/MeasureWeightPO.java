@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class MeasureWeightPO extends ActionPO {
 
-    Integer gram;
+    Long gram;
 
     LocalDateTime measureTime;
 

@@ -76,7 +76,8 @@ public class Child {
     }
 
     public void complete(Action action) {
-        action.beDoneBy(this);
+
+        action.execute(this);
 
         updateAccomplishedAchievements();
 

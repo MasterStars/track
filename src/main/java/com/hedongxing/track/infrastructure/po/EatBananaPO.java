@@ -11,9 +11,9 @@ import java.time.LocalDateTime;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class EatBananaPO extends ActionPO {
 
-    private Integer amount;
+    Long amount;
 
-    private LocalDateTime eatTime;
+    LocalDateTime eatTime;
 
     @Override
     public Action transformToAction() {

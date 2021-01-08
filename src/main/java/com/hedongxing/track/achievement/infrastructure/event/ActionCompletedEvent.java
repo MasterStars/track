@@ -11,5 +11,15 @@ public class ActionCompletedEvent extends ApplicationEvent {
 
     public ActionCompletedEvent(Object source, String childId, Action action) {
         super(source);
+        this.childId = childId;
+        this.action = action;
+    }
+
+    public String getChildId() {
+        return childId;
+    }
+
+    public Action getAction() {
+        return action;
     }
 }

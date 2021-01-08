@@ -18,14 +18,6 @@ public abstract class Action implements Comparable<Action> {
     }
 
     /**
-     * 完成动作
-     * @param child
-     */
-    public void beDoneBy(Child child) {
-        execute(child);
-    }
-
-    /**
      * 动作执行
      * @param child
      */

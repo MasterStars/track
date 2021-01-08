@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class DrinkMilkPO extends ActionPO {
 
-    Integer milliliters;
+    Long milliliters;
 
     LocalDateTime drinkTime;
 
