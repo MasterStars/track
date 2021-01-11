@@ -1,4 +1,4 @@
-package com.hedongxing.track.infrastructure.po;
+package com.hedongxing.track.infrastructure.dto;
 
 import lombok.AccessLevel;
 import lombok.Data;
@@ -8,9 +8,7 @@ import java.time.LocalDateTime;
 
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ActionPO {
-
-    String id;
+public class SaveActionDTO {
 
     String actionDefinitionId;
 

@@ -4,17 +4,13 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
-import java.time.LocalDateTime;
-
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ActionPO {
+public class ActionDefinitionPropertyPO {
 
     String id;
 
     String actionDefinitionId;
 
-    LocalDateTime actionTime;
-
-    String arguments;
+    String propertyId;
 }

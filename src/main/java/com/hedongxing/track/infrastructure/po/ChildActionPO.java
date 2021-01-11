@@ -16,5 +16,5 @@ public class ChildActionPO {
 
     String actionId;
 
-    LocalDateTime actionTime;
+
 }

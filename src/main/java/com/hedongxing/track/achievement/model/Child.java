@@ -101,7 +101,7 @@ public class Child {
         List<Action> actionRecords = ActionRepository.getChildActions(id);
         StringBuilder details = new StringBuilder();
         for(Action action : actionRecords) {
-            details.append(action.getActionTime() + ": " + name + "完成<" + action.getName() + ">");
+            details.append(action.getActionTime() + ": " + name + "完成<" + action.getName() + ">,详细: " + action.getActionDetail());
             details.append("\n");
         }
         return details.toString();
