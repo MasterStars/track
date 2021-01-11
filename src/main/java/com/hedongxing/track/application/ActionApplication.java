@@ -27,11 +27,12 @@ public class ActionApplication {
         actionDefinitionPO.setArgumentKeys(saveActionDefinitionDTO.getArgumentKeys());
         actionDefinitionMapper.insert(actionDefinitionPO);
 
-        for(String propertyId : saveActionDefinitionDTO.getPropertyIds()) {
+        for(String propertyId : saveActionDefinitionDTO.getProperties().keySet()) {
             ActionDefinitionPropertyPO actionDefinitionPropertyPO = new ActionDefinitionPropertyPO();
             actionDefinitionPropertyPO.setId(UUID.randomUUID().toString());
             actionDefinitionPropertyPO.setPropertyId(propertyId);
             actionDefinitionPropertyPO.setActionDefinitionId(actionDefinitionPO.getId());
+            actionDefinitionPropertyPO.setType(saveActionDefinitionDTO.getProperties().get(propertyId));
             actionDefinitionPropertyMapper.insert(actionDefinitionPropertyPO);
         }
     }

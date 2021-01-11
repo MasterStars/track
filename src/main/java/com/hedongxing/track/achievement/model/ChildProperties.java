@@ -11,7 +11,7 @@ public class ChildProperties {
         this.properties = properties;
     }
 
-    public void gainProperty(Property property, long value) {
+    public void gain(Property property, long value) {
         long newValue = value;
         if(properties.containsKey(property)) {
             newValue += properties.get(property);
@@ -19,15 +19,27 @@ public class ChildProperties {
         properties.put(property, newValue);
     }
 
-    public void gainProperties(Map<Property, Long> gainedProperties) {
+    public void gain(Map<Property, Long> gainedProperties) {
         for(Property property : gainedProperties.keySet()) {
-            gainProperty(property, gainedProperties.get(property));
+            gain(property, gainedProperties.get(property));
+        }
+    }
+
+    public void replace(Property property, long value) {
+        properties.put(property, value);
+    }
+
+    public void replace(Map<Property, Long> replacedProperties) {
+        for(Property property : replacedProperties.keySet()) {
+            replace(property, replacedProperties.get(property));
         }
     }
 
     public void update(String propertyName, long value) {
         properties.put(PropertyRepository.getProperty(propertyName), value);
     }
+
+
 
     public long get(String propertyName) {
         return properties.get(PropertyRepository.getProperty(propertyName));

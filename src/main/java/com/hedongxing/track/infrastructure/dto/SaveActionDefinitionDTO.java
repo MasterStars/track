@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
 import java.util.List;
+import java.util.Map;
 
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -18,5 +19,5 @@ public class SaveActionDefinitionDTO {
 
     String argumentKeys;
 
-    List<String> propertyIds;
+    Map<String, Integer> properties;
 }

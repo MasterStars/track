@@ -5,9 +5,11 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.hedongxing.track.achievement.model.Action;
 import com.hedongxing.track.achievement.model.Property;
 import com.hedongxing.track.infrastructure.mapper.ActionDefinitionMapper;
+import com.hedongxing.track.infrastructure.mapper.ActionDefinitionPropertyMapper;
 import com.hedongxing.track.infrastructure.mapper.ActionMapper;
 import com.hedongxing.track.infrastructure.mapper.ActionPropertyMapper;
 import com.hedongxing.track.infrastructure.po.ActionDefinitionPO;
+import com.hedongxing.track.infrastructure.po.ActionDefinitionPropertyPO;
 import com.hedongxing.track.infrastructure.po.ActionPO;
 import com.hedongxing.track.infrastructure.po.ActionPropertyPO;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +29,8 @@ public class ActionRepositoryImpl {
 
     private final ActionDefinitionMapper actionDefinitionMapper;
 
+    private final ActionDefinitionPropertyMapper actionDefinitionPropertyMapper;
+
     private final ActionPropertyMapper actionPropertyMapper;
 
     private final PropertyRepositoryImpl propertyRepository;
@@ -40,10 +44,24 @@ public class ActionRepositoryImpl {
                     actionPropertyMapper.selectList(Wrappers.<ActionPropertyPO>lambdaQuery().eq(
                             ActionPropertyPO::getActionId, actionPO.getId()
                     ));
+            List<ActionDefinitionPropertyPO> actionDefinitionPropertyPOS =
+                    actionDefinitionPropertyMapper.selectList(Wrappers.<ActionDefinitionPropertyPO>lambdaQuery().eq(
+                            ActionDefinitionPropertyPO::getActionDefinitionId, actionPO.getActionDefinitionId()
+                    ));
             Map<Property, Long> gainedProperties = new HashMap<>();
+            Map<Property, Long> replacedProperties = new HashMap<>();
             for(ActionPropertyPO actionPropertyPO : actionPropertyPOS) {
-                gainedProperties.put(propertyRepository.getPropertyById(actionPropertyPO.getPropertyId()),
-                        actionPropertyPO.getValue());
+                for(ActionDefinitionPropertyPO actionDefinitionPropertyPO : actionDefinitionPropertyPOS){
+                    if(actionPropertyPO.getPropertyId().equals(actionDefinitionPropertyPO.getPropertyId())){
+                        if(actionDefinitionPropertyPO.getType() == 1) {
+                            gainedProperties.put(propertyRepository.getPropertyById(actionPropertyPO.getPropertyId()),
+                                    actionPropertyPO.getValue());
+                        }else{
+                            replacedProperties.put(propertyRepository.getPropertyById(actionPropertyPO.getPropertyId()),
+                                    actionPropertyPO.getValue());
+                        }
+                    }
+                }
             }
 
             ActionDefinitionPO actionDefinitionPO =
@@ -60,6 +78,7 @@ public class ActionRepositoryImpl {
             actions.add(new Action(actionDefinitionPO.getName(),
                     actionPO.getActionTime(),
                     gainedProperties,
+                    replacedProperties,
                     actionDetail));
         }
 

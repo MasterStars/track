@@ -79,7 +79,9 @@ public class Child {
 
     private void doAction(Action action) {
         Map<Property, Long> gainedProperties = action.getGainedProperties();
-        properties.gainProperties(gainedProperties);
+        properties.gain(gainedProperties);
+        Map<Property, Long> replacedProperties = action.getReplacedProperties();
+        properties.replace(replacedProperties);
     }
 
     private void recordAction(Action action) {

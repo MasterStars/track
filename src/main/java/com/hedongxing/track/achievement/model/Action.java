@@ -18,5 +18,7 @@ public class Action {
 
     private Map<Property, Long> gainedProperties;
 
+    private Map<Property, Long> replacedProperties;
+
     private String actionDetail;
 }
