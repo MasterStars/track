@@ -7,7 +7,7 @@ import java.util.List;
 
 public class ActionRepository {
 
-    public static List<Action> getChildActions(String childId) {
-        return SpringBeanUtil.getBean(ActionRepositoryImpl.class).getChildActions(childId);
+    public static List<Action> getChildActionRecords(String childId) {
+        return SpringBeanUtil.getBean(ActionRepositoryImpl.class).getChildActionRecords(childId);
     }
 }

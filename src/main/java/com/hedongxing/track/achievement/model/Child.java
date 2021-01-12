@@ -100,10 +100,10 @@ public class Child {
     }
 
     public String printActionDetails() {
-        List<Action> actionRecords = ActionRepository.getChildActions(id);
+        List<Action> actionRecords = ActionRepository.getChildActionRecords(id);
         StringBuilder details = new StringBuilder();
         for(Action action : actionRecords) {
-            details.append(action.getActionTime() + ": " + name + "完成<" + action.getName() + ">,详细: " + action.getActionDetail());
+            details.append(action.getActionTime() + ": " + name + "完成<" + action.getActionWord() + ">,详细: " + action.getDetail());
             details.append("\n");
         }
         return details.toString();

@@ -15,9 +15,4 @@ public class ActionDefinitionPropertyPO {
     String actionDefinitionId;
 
     String propertyId;
-
-    /**
-     * 类型 1：累加；2：替換
-     */
-    Integer type;
 }

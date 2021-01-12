@@ -2,6 +2,7 @@ package com.hedongxing.track.application;
 
 import com.hedongxing.track.achievement.infrastructure.persistence.ChildRepositoryImpl;
 import com.hedongxing.track.achievement.model.Child;
+import com.hedongxing.track.achievement.model.action.Sleep;
 import com.hedongxing.track.infrastructure.dto.SaveChildDTO;
 import com.hedongxing.track.infrastructure.mapper.ChildMapper;
 import com.hedongxing.track.infrastructure.po.ChildPO;
@@ -38,7 +39,9 @@ public class ChildApplication {
     }
 
     public void sleep(String childId, LocalDateTime sleepTime, LocalDateTime wakeTime){
-
+        Child child = childRepository.getChildById(childId);
+        Sleep sleep = new Sleep(sleepTime, wakeTime);
+        child.complete(sleep.toAction());
 
     }
 

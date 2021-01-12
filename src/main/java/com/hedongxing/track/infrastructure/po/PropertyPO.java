@@ -15,4 +15,9 @@ public class PropertyPO {
     String name;
 
     String unit;
+
+    /**
+     * 类型 1：累加；2：替換;3: 互斥累加
+     */
+    Integer type;
 }

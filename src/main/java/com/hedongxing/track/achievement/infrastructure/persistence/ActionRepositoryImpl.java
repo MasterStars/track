@@ -1,13 +1,9 @@
 package com.hedongxing.track.achievement.infrastructure.persistence;
 
-import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.hedongxing.track.achievement.model.Action;
 import com.hedongxing.track.achievement.model.Property;
-import com.hedongxing.track.infrastructure.mapper.ActionDefinitionMapper;
-import com.hedongxing.track.infrastructure.mapper.ActionDefinitionPropertyMapper;
-import com.hedongxing.track.infrastructure.mapper.ActionMapper;
-import com.hedongxing.track.infrastructure.mapper.ActionPropertyMapper;
+import com.hedongxing.track.infrastructure.mapper.*;
 import com.hedongxing.track.infrastructure.po.ActionDefinitionPO;
 import com.hedongxing.track.infrastructure.po.ActionDefinitionPropertyPO;
 import com.hedongxing.track.infrastructure.po.ActionPO;
@@ -35,7 +31,9 @@ public class ActionRepositoryImpl {
 
     private final PropertyRepositoryImpl propertyRepository;
 
-    public List<Action> getChildActions(String childId) {
+    private final PropertyMapper propertyMapper;
+
+    public List<Action> getChildActionRecords(String childId) {
         List<Action> actions = new ArrayList<>();
 
         List<ActionPO> actionPOS = actionMapper.getActionsByChildId(childId);
@@ -51,35 +49,24 @@ public class ActionRepositoryImpl {
             Map<Property, Long> gainedProperties = new HashMap<>();
             Map<Property, Long> replacedProperties = new HashMap<>();
             for(ActionPropertyPO actionPropertyPO : actionPropertyPOS) {
-                for(ActionDefinitionPropertyPO actionDefinitionPropertyPO : actionDefinitionPropertyPOS){
-                    if(actionPropertyPO.getPropertyId().equals(actionDefinitionPropertyPO.getPropertyId())){
-                        if(actionDefinitionPropertyPO.getType() == 1) {
-                            gainedProperties.put(propertyRepository.getPropertyById(actionPropertyPO.getPropertyId()),
-                                    actionPropertyPO.getValue());
-                        }else{
-                            replacedProperties.put(propertyRepository.getPropertyById(actionPropertyPO.getPropertyId()),
-                                    actionPropertyPO.getValue());
-                        }
-                    }
+                if(propertyMapper.selectById(actionPropertyPO.getPropertyId()).getType() == 1) {
+                    gainedProperties.put(propertyRepository.getPropertyById(actionPropertyPO.getPropertyId()),
+                            actionPropertyPO.getValue());
+                }else{
+                    replacedProperties.put(propertyRepository.getPropertyById(actionPropertyPO.getPropertyId()),
+                            actionPropertyPO.getValue());
                 }
             }
-
             ActionDefinitionPO actionDefinitionPO =
                     actionDefinitionMapper.selectOne(Wrappers.<ActionDefinitionPO>lambdaQuery().eq(
                             ActionDefinitionPO::getId, actionPO.getActionDefinitionId()
                     ));
-            String argmentKeys = actionDefinitionPO.getArgumentKeys();
-            String arguments = actionPO.getArguments();
-            HashMap<String, String> argumentsMap = JSON.parseObject(arguments, HashMap.class);
-            String actionDetail = getActionDetail(actionDefinitionPO.getPattern(),
-                    argmentKeys.split(","),
-                    argumentsMap);
 
             actions.add(new Action(actionDefinitionPO.getName(),
                     actionPO.getActionTime(),
                     gainedProperties,
                     replacedProperties,
-                    actionDetail));
+                    actionPO.getDetail()));
         }
 
         return actions;

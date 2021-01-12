@@ -18,5 +18,5 @@ public class ActionPO {
 
     LocalDateTime actionTime;
 
-    String arguments;
+    String detail;
 }

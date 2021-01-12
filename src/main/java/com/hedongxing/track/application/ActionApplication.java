@@ -23,8 +23,6 @@ public class ActionApplication {
         actionDefinitionPO.setId(UUID.randomUUID().toString());
         actionDefinitionPO.setActionWord(saveActionDefinitionDTO.getActionWord());
         actionDefinitionPO.setName(saveActionDefinitionDTO.getName());
-        actionDefinitionPO.setPattern(saveActionDefinitionDTO.getPattern());
-        actionDefinitionPO.setArgumentKeys(saveActionDefinitionDTO.getArgumentKeys());
         actionDefinitionMapper.insert(actionDefinitionPO);
 
         for(String propertyId : saveActionDefinitionDTO.getProperties().keySet()) {
@@ -32,7 +30,6 @@ public class ActionApplication {
             actionDefinitionPropertyPO.setId(UUID.randomUUID().toString());
             actionDefinitionPropertyPO.setPropertyId(propertyId);
             actionDefinitionPropertyPO.setActionDefinitionId(actionDefinitionPO.getId());
-            actionDefinitionPropertyPO.setType(saveActionDefinitionDTO.getProperties().get(propertyId));
             actionDefinitionPropertyMapper.insert(actionDefinitionPropertyPO);
         }
     }

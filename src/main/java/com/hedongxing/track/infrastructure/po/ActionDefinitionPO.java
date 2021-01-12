@@ -15,8 +15,4 @@ public class ActionDefinitionPO {
     String actionWord;
 
     String name;
-
-    String pattern;
-
-    String argumentKeys;
 }
