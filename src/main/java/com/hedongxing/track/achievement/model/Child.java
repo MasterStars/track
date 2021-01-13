@@ -1,13 +1,14 @@
 package com.hedongxing.track.achievement.model;
 
-import com.hedongxing.track.achievement.infrastructure.event.AchievementAccomplishedEvent;
-import com.hedongxing.track.achievement.infrastructure.event.ActionCompletedEvent;
-import com.hedongxing.track.achievement.infrastructure.event.ChildPropertyUpdatedEvent;
-import com.hedongxing.track.infrastructure.util.SpringBeanUtil;
+import com.hedongxing.track.achievement.infrastructure.event.AchievementAccomplished;
+import com.hedongxing.track.achievement.infrastructure.event.ActionCompleted;
+import com.hedongxing.track.achievement.infrastructure.event.ChildPropertyUpdated;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
 import java.util.*;
+
+import static com.hedongxing.track.infrastructure.util.SpringBeanUtil.publish;
 
 @Getter
 public class Child {
@@ -16,9 +17,9 @@ public class Child {
 
     private String name;
 
-    private ChildProperties properties;
+    private ChildProperties childProperties;
 
-    private AccomplishedAchievements accomplishedAchievements;
+    private List<AccomplishedAchievement> accomplishedAchievements;
 
     private Child(String id, String name) {
         this.id = id;
@@ -27,17 +28,17 @@ public class Child {
         for(Property property : PropertyRepository.allPrperties()) {
             propertyMap.put(property, 0L);
         }
-        properties = new ChildProperties(propertyMap);
-        accomplishedAchievements = new AccomplishedAchievements(new ArrayList<>());
+        childProperties = new ChildProperties(propertyMap);
+        accomplishedAchievements = new ArrayList<>();
     }
 
     public Child(String id,
                  String name,
-                 ChildProperties properties,
-                 AccomplishedAchievements accomplishedAchievements) {
+                 ChildProperties childProperties,
+                 List<AccomplishedAchievement> accomplishedAchievements) {
         this.id = id;
         this.name = name;
-        this.properties = properties;
+        this.childProperties = childProperties;
         this.accomplishedAchievements = accomplishedAchievements;
     }
 
@@ -47,25 +48,21 @@ public class Child {
 
     private void updateAccomplishedAchievements() {
         for(Achievement achievement : AchievementRepository.allAchievements()) {
-            if(!hasAlreadyAccomplished(achievement) && achievement.isAchievedBy(properties)) {
-                accomplishedAchievements.addNewAchievement(achievement);
-                SpringBeanUtil.publishEvent(new AchievementAccomplishedEvent(this, id, new AccomplishedAchievement(achievement, LocalDateTime.now())));
+            if(!hasAlreadyAccomplished(achievement) && achievement.isAchievedBy(childProperties)) {
+                AccomplishedAchievement newAccomplishedAchievement = new AccomplishedAchievement(achievement, LocalDateTime.now());
+                accomplishedAchievements.add(newAccomplishedAchievement);
+                publish(new AchievementAccomplished(this, id, newAccomplishedAchievement));
             }
         }
     }
 
     private boolean hasAlreadyAccomplished(Achievement achievement) {
-        for(AccomplishedAchievement accomplishedAchievement : accomplishedAchievements.getAccomplishedAchievements()) {
+        for(AccomplishedAchievement accomplishedAchievement : accomplishedAchievements) {
             if(accomplishedAchievement.getAchievement().equals(achievement)) {
                 return true;
             }
         }
         return false;
-    }
-
-    public void updateProperties(String propertyName, long value) {
-        properties.update(propertyName, value);
-        SpringBeanUtil.publishEvent(new ChildPropertyUpdatedEvent(this, id, PropertyRepository.getProperty(propertyName), value));
     }
 
     public void complete(Action action) {
@@ -74,38 +71,20 @@ public class Child {
 
         updateAccomplishedAchievements();
 
-        recordAction(action);
     }
 
     private void doAction(Action action) {
         Map<Property, Long> gainedProperties = action.getGainedProperties();
-        properties.gain(gainedProperties);
+        childProperties.gain(gainedProperties);
         Map<Property, Long> replacedProperties = action.getReplacedProperties();
-        properties.replace(replacedProperties);
-    }
+        childProperties.replace(replacedProperties);
 
-    private void recordAction(Action action) {
-        SpringBeanUtil.publishEvent(new ActionCompletedEvent(this, id, action));
-    }
-
-    public String printAccomplishedAchievements() {
-        String accomplishedAchievementsPrinter = name + "成就榜: " + "\n";
-        int points = 0;
-        for(AccomplishedAchievement accomplishedAchievement : accomplishedAchievements.getAccomplishedAchievements()) {
-            accomplishedAchievementsPrinter += accomplishedAchievement.getAchievement().getName() + ": " + accomplishedAchievement.getAchievement().getScore() + "\n";
-            points += accomplishedAchievement.getAchievement().getScore();
+        for(Property property : gainedProperties.keySet()) {
+            publish(new ChildPropertyUpdated(this, id, property, childProperties.get(property)));
         }
-        accomplishedAchievementsPrinter += "当前成就分: " + points;
-        return accomplishedAchievementsPrinter;
-    }
-
-    public String printActionDetails() {
-        List<Action> actionRecords = ActionRepository.getChildActionRecords(id);
-        StringBuilder details = new StringBuilder();
-        for(Action action : actionRecords) {
-            details.append(action.getActionTime() + ": " + name + "完成<" + action.getActionWord() + ">,详细: " + action.getDetail());
-            details.append("\n");
+        for(Property property : replacedProperties.keySet()) {
+            publish(new ChildPropertyUpdated(this, id, property, childProperties.get(property)));
         }
-        return details.toString();
+        publish(new ActionCompleted(this, id, action));
     }
 }

@@ -1,7 +1,10 @@
 package com.hedongxing.track.achievement.infrastructure.persistence;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.hedongxing.track.achievement.model.*;
+import com.hedongxing.track.achievement.model.AccomplishedAchievement;
+import com.hedongxing.track.achievement.model.Child;
+import com.hedongxing.track.achievement.model.ChildProperties;
+import com.hedongxing.track.achievement.model.Property;
 import com.hedongxing.track.infrastructure.mapper.ChildAchievementMapper;
 import com.hedongxing.track.infrastructure.mapper.ChildMapper;
 import com.hedongxing.track.infrastructure.mapper.ChildPropertyMapper;
@@ -57,7 +60,7 @@ public class ChildRepositoryImpl {
         return new Child(childPO.getId(),
                 childPO.getName(),
                 childProperties,
-                new AccomplishedAchievements(accomplishedAchievements));
+                accomplishedAchievements);
     }
 
     public void saveChild(Child child) {
@@ -65,7 +68,7 @@ public class ChildRepositoryImpl {
         childPO.setName(child.getName());
         childMapper.updateById(childPO);
 
-        ChildProperties childProperties = child.getProperties();
+        ChildProperties childProperties = child.getChildProperties();
         for(Property property : childProperties.getProperties().keySet()) {
 
         }

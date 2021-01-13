@@ -45,6 +45,10 @@ public class ChildProperties {
         return properties.get(PropertyRepository.getProperty(propertyName));
     }
 
+    public long get(Property property) {
+        return properties.get(property);
+    }
+
     public Map<Property, Long> getProperties() {
         return Collections.unmodifiableMap(properties);
     }

@@ -1,6 +1,9 @@
 package com.hedongxing.track.application;
 
 import com.hedongxing.track.achievement.infrastructure.persistence.ChildRepositoryImpl;
+import com.hedongxing.track.achievement.model.AccomplishedAchievement;
+import com.hedongxing.track.achievement.model.Action;
+import com.hedongxing.track.achievement.model.ActionRepository;
 import com.hedongxing.track.achievement.model.Child;
 import com.hedongxing.track.achievement.model.action.Sleep;
 import com.hedongxing.track.infrastructure.dto.SaveChildDTO;
@@ -11,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -47,12 +51,24 @@ public class ChildApplication {
 
     public String achievements(String childId) {
         Child child = childRepository.getChildById(childId);
-        return child.printAccomplishedAchievements();
+        String accomplishedAchievementsPrinter = child.getName() + "成就榜: " + "\n";
+        int points = 0;
+        for(AccomplishedAchievement accomplishedAchievement : child.getAccomplishedAchievements()) {
+            accomplishedAchievementsPrinter += accomplishedAchievement.getAchievement().getName() + ": " + accomplishedAchievement.getAchievement().getScore() + "\n";
+            points += accomplishedAchievement.getAchievement().getScore();
+        }
+        accomplishedAchievementsPrinter += "当前成就分: " + points;
+        return accomplishedAchievementsPrinter;
     }
 
     public String outputActions(String childId) {
-        Child child = childRepository.getChildById(childId);
-        return child.printActionDetails();
+        List<Action> actionRecords = ActionRepository.getChildActionRecords(childId);
+        StringBuilder details = new StringBuilder();
+        for(Action action : actionRecords) {
+            details.append("完成<" + action.getActionWord() + ">,详细: " + action.getDetail());
+            details.append("\n");
+        }
+        return details.toString();
     }
 
 }

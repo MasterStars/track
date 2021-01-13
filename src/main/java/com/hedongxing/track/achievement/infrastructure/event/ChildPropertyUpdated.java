@@ -3,7 +3,7 @@ package com.hedongxing.track.achievement.infrastructure.event;
 import com.hedongxing.track.achievement.model.Property;
 import org.springframework.context.ApplicationEvent;
 
-public class ChildPropertyUpdatedEvent extends ApplicationEvent {
+public class ChildPropertyUpdated extends ApplicationEvent {
 
     private String childId;
 
@@ -11,7 +11,7 @@ public class ChildPropertyUpdatedEvent extends ApplicationEvent {
 
     private Long updatedValue;
 
-    public ChildPropertyUpdatedEvent(Object source, String childId, Property updatedProperty, Long updatedValue) {
+    public ChildPropertyUpdated(Object source, String childId, Property updatedProperty, Long updatedValue) {
         super(source);
         this.childId = childId;
         this.updatedProperty = updatedProperty;
