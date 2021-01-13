@@ -14,6 +14,6 @@ public class ActionCompletedEventListener implements ApplicationListener<ActionC
 
     @Override
     public void onApplicationEvent(ActionCompletedEvent event) {
-
+        actionRepository.addAction(event.getChildId(), event.getAction());
     }
 }

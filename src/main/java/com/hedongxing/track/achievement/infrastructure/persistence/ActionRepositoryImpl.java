@@ -4,18 +4,12 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.hedongxing.track.achievement.model.Action;
 import com.hedongxing.track.achievement.model.Property;
 import com.hedongxing.track.infrastructure.mapper.*;
-import com.hedongxing.track.infrastructure.po.ActionDefinitionPO;
-import com.hedongxing.track.infrastructure.po.ActionDefinitionPropertyPO;
-import com.hedongxing.track.infrastructure.po.ActionPO;
-import com.hedongxing.track.infrastructure.po.ActionPropertyPO;
+import com.hedongxing.track.infrastructure.po.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Repository
 @RequiredArgsConstructor
@@ -32,6 +26,8 @@ public class ActionRepositoryImpl {
     private final PropertyRepositoryImpl propertyRepository;
 
     private final PropertyMapper propertyMapper;
+
+    private final ChildActionMapper childActionMapper;
 
     public List<Action> getChildActionRecords(String childId) {
         List<Action> actions = new ArrayList<>();
@@ -78,6 +74,35 @@ public class ActionRepositoryImpl {
             arguments[i] = argumentMap.get(argumentKeys[i]);
         }
         return MessageFormat.format(pattern, arguments);
+    }
+
+    public void addAction(String childId, Action action) {
+        ActionDefinitionPO actionDefinitionPO = actionDefinitionMapper.selectOne(
+                Wrappers.<ActionDefinitionPO>lambdaQuery().eq(ActionDefinitionPO::getActionWord, action.getActionWord()));
+        ActionPO actionPO = new ActionPO();
+        actionPO.setId(UUID.randomUUID().toString());
+        actionPO.setActionDefinitionId(actionDefinitionPO.getId());
+        actionPO.setActionTime(action.getActionTime());
+        actionPO.setDetail(action.getDetail());
+        actionMapper.insert(actionPO);
+        ChildActionPO childActionPO = new ChildActionPO();
+        childActionPO.setId(UUID.randomUUID().toString());
+        childActionPO.setActionId(actionPO.getId());
+        childActionPO.setChildId(childId);
+        childActionMapper.insert(childActionPO);
+        Map<Property, Long> properties = new HashMap<>();
+        properties.putAll(action.getGainedProperties());
+        properties.putAll(action.getReplacedProperties());
+        for(Property property : properties.keySet()) {
+            PropertyPO propertyPO = propertyMapper.selectOne(
+                    Wrappers.<PropertyPO>lambdaQuery().eq(PropertyPO::getName, property.getName()));
+            ActionPropertyPO actionPropertyPO = new ActionPropertyPO();
+            actionPropertyPO.setId(UUID.randomUUID().toString());
+            actionPropertyPO.setActionId(actionPO.getId());
+            actionPropertyPO.setPropertyId(propertyPO.getId());
+            actionPropertyPO.setValue(properties.get(property));
+            actionPropertyMapper.insert(actionPropertyPO);
+        }
     }
 
 }
