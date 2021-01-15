@@ -1,31 +1,49 @@
 package com.hedongxing.track.v2.reward.application;
 
+import com.hedongxing.track.v2.reward.model.AchievementReward;
+import com.hedongxing.track.v2.reward.model.ExchangeReward;
+
 import java.time.LocalDateTime;
 
 public interface RewardApplication {
 
     /**
-     * 主角申请领取成就积分奖励
+     * 主角申请领取成就奖励
      * @param subjectId 主角ID
-     * @param points 哪个分段的奖励
+     * @param rewardId 奖励ID
      * @param applyTime 申请时间
      */
-    void applyAchievementPointsReward(String subjectId, Integer points, LocalDateTime applyTime);
+    void applyAchievementReward(String subjectId, String rewardId, LocalDateTime applyTime);
 
     /**
      * 主角领取成就积分奖励
      * @param subjectId 主角ID
-     * @param points 哪个分段的奖励
+     * @param rewardId 奖励ID
      * @param receiveTime 领取时间
      */
-    void receiveAchievementPointsReward(String subjectId, Integer points, LocalDateTime receiveTime);
+    void receiveAchievementReward(String subjectId, String rewardId, LocalDateTime receiveTime);
 
     /**
-     * 主角申请用消费积分兑换奖励
+     * 下发成就奖励
+     * @param rewardReleaserId 下发者ID
+     * @param subjectId 主角ID
+     * @param rewardId 奖励ID
+     * @param releaseTime 下发时间
+     */
+    void releaseAchievementReward(String rewardReleaserId, String subjectId, String rewardId, LocalDateTime releaseTime);
+
+    /**
+     * 主角申请兑换奖励
      * @param subjectId 主角ID
      * @param rewardId 奖励ID
      */
-    void applyExchangeConsumptionRewards(String subjectId, String rewardId);
+    void applyExchangeReward(String subjectId, String rewardId, LocalDateTime applyTime);
 
-    void receiveExchangeConsumptionRewards(String subjectId, String rewardId);
+    void receiveExchangeReward(String subjectId, String rewardId, LocalDateTime receiveTime);
+
+    void releaseExchangeReward(String rewardReleaserId, String subjectId, String rewardId, LocalDateTime releaseTime);
+
+    AchievementReward getAchievementRewardById(String rewardId);
+
+    ExchangeReward getExchangeRewardById(String rewardId);
 }

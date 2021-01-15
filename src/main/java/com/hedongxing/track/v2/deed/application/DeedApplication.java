@@ -1,18 +1,17 @@
 package com.hedongxing.track.v2.deed.application;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 public interface DeedApplication {
 
     /**
-     * 主角将完成的事迹发送给奖励发放人
+     * 将主角完成的事迹提交
+     * @param submitterId 提交人ID
      * @param subjectId 主角ID
      * @param deedId 事迹ID
-     * @param rewardReleaserId 奖励发放人ID
      * @param completeTime 事迹完成时间
      */
-    void sendDeed(String subjectId, String deedId, String rewardReleaserId, LocalDateTime completeTime);
+    void submitDeed(String submitterId, String subjectId, String deedId, LocalDateTime completeTime);
 
     /**
      * 奖励发放人确认事迹有效

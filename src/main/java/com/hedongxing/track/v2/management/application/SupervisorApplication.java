@@ -1,5 +1,7 @@
 package com.hedongxing.track.v2.management.application;
 
+import java.util.List;
+
 public interface SupervisorApplication {
 
     /**
@@ -11,4 +13,11 @@ public interface SupervisorApplication {
      * @param title （主角对监察者的）称呼
      */
     void setSupervisor(String id, String tenantId, String subjectId, String name, String title);
+
+    /**
+     * 获取主角的监察人列表
+     * @param subjectId
+     * @return
+     */
+    List<String> getSupervisorsOfSubject(String subjectId);
 }

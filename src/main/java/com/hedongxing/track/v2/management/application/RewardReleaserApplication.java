@@ -1,5 +1,7 @@
 package com.hedongxing.track.v2.management.application;
 
+import java.util.List;
+
 public interface RewardReleaserApplication {
 
     /**
@@ -11,4 +13,6 @@ public interface RewardReleaserApplication {
      * @param title （主角对发放人的）称呼
      */
     void setRewardReleaser(String id, String tenantId, String subjectId, String name, String title);
+
+    List<String> getRewardReleaserOfSubject(String subjectId);
 }

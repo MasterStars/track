@@ -7,7 +7,7 @@ public interface AchievementApplication {
     /**
      * 添加成就
      * @param id 成就ID
-     * @param tenantId 租户ID
+     * @param kitSerialNumber 所属套件序列号
      * @param categoryId 成就种类ID
      * @param name 成就名称
      * @param description 成就描述
@@ -15,12 +15,12 @@ public interface AchievementApplication {
      * @param timeLimit 成就的时间限制
      * @param points 成就分
      */
-    void addAchievement(String id, String tenantId, String categoryId, String name, String description, Map<String, Integer> deedsRequirment, String timeLimit, Integer points);
+    void addAchievement(String id, String kitSerialNumber, String categoryId, String name, String description, Map<String, Integer> deedsRequirment, String timeLimit, Integer points);
 
     /**
      * 编辑成就
      * @param id
-     * @param tenantId 租户ID
+     * @param kitSerialNumber 所属套件序列号
      * @param categoryId
      * @param name
      * @param description
@@ -28,5 +28,5 @@ public interface AchievementApplication {
      * @param timeLimit
      * @param points
      */
-    void editAchievement(String id, String tenantId, String categoryId, String name, String description, Map<String, Integer> deedsRequirment, String timeLimit, Integer points);
+    void editAchievement(String id, String kitSerialNumber, String categoryId, String name, String description, Map<String, Integer> deedsRequirment, String timeLimit, Integer points);
 }
