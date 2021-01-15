@@ -39,8 +39,21 @@ public interface RewardApplication {
      */
     void applyExchangeReward(String subjectId, String rewardId, LocalDateTime applyTime);
 
+    /**
+     * 主角接收兑换奖励
+     * @param subjectId
+     * @param rewardId
+     * @param receiveTime
+     */
     void receiveExchangeReward(String subjectId, String rewardId, LocalDateTime receiveTime);
 
+    /**
+     * 下发者下发兑换奖励
+     * @param rewardReleaserId
+     * @param subjectId
+     * @param rewardId
+     * @param releaseTime
+     */
     void releaseExchangeReward(String rewardReleaserId, String subjectId, String rewardId, LocalDateTime releaseTime);
 
     AchievementReward getAchievementRewardById(String rewardId);
