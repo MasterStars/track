@@ -1,10 +1,9 @@
 package com.hedongxing.track.v2.reward.application.impl;
 
-import com.hedongxing.track.v2.infrastructure.support.EventPublisher;
 import com.hedongxing.track.v2.reward.application.RewardApplication;
 import com.hedongxing.track.v2.reward.application.SubjectApplication;
 import com.hedongxing.track.v2.reward.application.SubjectRewardApplication;
-import com.hedongxing.track.v2.reward.model.AchievementReward;
+import com.hedongxing.track.v2.reward.model.AchievementPointsReward;
 import com.hedongxing.track.v2.reward.model.ExchangeReward;
 import com.hedongxing.track.v2.reward.model.Subject;
 import com.hedongxing.track.v2.reward.model.event.AchievementRewardApplied;
@@ -25,10 +24,10 @@ public class RewardApplicationImpl implements RewardApplication {
     @Override
     public void applyAchievementReward(String subjectId, String rewardId, LocalDateTime applyTime) {
         if(!subjectRewardApplication.hasReceivedAchievementReward(subjectId, rewardId)){
-            AchievementReward achievementReward = getAchievementRewardById(rewardId);
+            AchievementPointsReward achievementPointsReward = getAchievementRewardById(rewardId);
             Subject subject = subjectApplication.getSubjectById(subjectId);
-            if(subject.getAchievementPoints() > achievementReward.getAchievementPoints()) {
-                PUBLISH(new AchievementRewardApplied(achievementReward));
+            if(subject.getAchievementPoints() > achievementPointsReward.getAchievementPoints()) {
+                PUBLISH(new AchievementRewardApplied(achievementPointsReward));
             }
         }
 
@@ -66,7 +65,7 @@ public class RewardApplicationImpl implements RewardApplication {
 
 
     @Override
-    public AchievementReward getAchievementRewardById(String rewardId) {
+    public AchievementPointsReward getAchievementRewardById(String rewardId) {
         return null;
     }
 

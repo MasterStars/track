@@ -5,15 +5,15 @@ import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
 /**
- * 成就奖励
+ * 成就分奖励
  */
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class AchievementReward {
+public class AchievementPointsReward {
 
     String id;
 
     String name;
 
-    String achievementId;
+    Integer achievementPoints;
 }

@@ -1,6 +1,6 @@
 package com.hedongxing.track.v2.reward.application;
 
-import com.hedongxing.track.v2.reward.model.AchievementReward;
+import com.hedongxing.track.v2.reward.model.AchievementPointsReward;
 import com.hedongxing.track.v2.reward.model.ExchangeReward;
 
 import java.time.LocalDateTime;
@@ -56,7 +56,7 @@ public interface RewardApplication {
      */
     void releaseExchangeReward(String rewardReleaserId, String subjectId, String rewardId, LocalDateTime releaseTime);
 
-    AchievementReward getAchievementRewardById(String rewardId);
+    AchievementPointsReward getAchievementRewardById(String rewardId);
 
     ExchangeReward getExchangeRewardById(String rewardId);
 }
