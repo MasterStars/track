@@ -1,8 +1,8 @@
 package com.hedongxing.track.v2.achievement.model.event;
 
-import org.springframework.context.ApplicationEvent;
+import com.hedongxing.track.v2.infrastructure.support.DomainEvent;
 
-public class SubjectAchievementInitialized extends ApplicationEvent {
+public class SubjectAchievementInitialized extends DomainEvent {
     /**
      * Create a new {@code ApplicationEvent}.
      *

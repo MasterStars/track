@@ -1,21 +1,19 @@
 package com.hedongxing.track.v2.achievement.application.impl;
 
-import com.hedongxing.track.v2.achievement.application.AchievementApplication;
-import com.hedongxing.track.v2.achievement.application.ConsumptionApplication;
-import com.hedongxing.track.v2.achievement.application.SubjectApplication;
-import com.hedongxing.track.v2.achievement.application.SubjectDeedApplication;
+import com.hedongxing.track.v2.achievement.application.*;
 import com.hedongxing.track.v2.achievement.model.Achievement;
 import com.hedongxing.track.v2.achievement.model.Subject;
 import com.hedongxing.track.v2.achievement.model.SubjectAchievement;
 import com.hedongxing.track.v2.achievement.model.SubjectDeed;
+import com.hedongxing.track.v2.achievement.model.event.SubjectAchievementAccomplished;
 import com.hedongxing.track.v2.achievement.model.event.SubjectAchievementInitialized;
-import com.hedongxing.track.v2.achievement.model.event.SubjectAchievementUpdated;
+import com.hedongxing.track.v2.achievement.model.event.SubjectAchievementRevoked;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.*;
 
-import static com.hedongxing.track.v2.infrastructure.support.EventPublisher.PUBLISH;
+import static com.hedongxing.track.v2.infrastructure.support.EventBus.PublishEvent;
 
 @RequiredArgsConstructor
 public class AchievementApplicationImpl implements AchievementApplication {
@@ -25,6 +23,8 @@ public class AchievementApplicationImpl implements AchievementApplication {
     private final ConsumptionApplication consumptionApplication;
 
     private final SubjectApplication subjectApplication;
+
+    private final SubjectAchievementApplication subjectAchievementApplication;
 
     @Override
     public void initSubjectAchievement(String subjectId) {
@@ -52,8 +52,6 @@ public class AchievementApplicationImpl implements AchievementApplication {
                     progress.put(deedId, achievementDeedRequirment);
                 }
             }
-            subjectAchievement.setProgress(progress);
-            subjectAchievement.setIsAccomplished(isAccomplished);
             if(isAccomplished) {
                 subjectAchievement.setAccomplishTime(lastDeedCompleteTime);
                 achievementPoints += achievement.getPoints();
@@ -67,28 +65,52 @@ public class AchievementApplicationImpl implements AchievementApplication {
         subject.setId(subjectId);
         subject.setAchievementPoints(achievementPoints);
         subject.setConsumptionPoints(originConsumptionPoints);
-        subject.setSubjectAchievements(subjectAchievements);
 
-        PUBLISH(new SubjectAchievementInitialized(subject));
+        PublishEvent(new SubjectAchievementInitialized(subject));
     }
 
     @Override
     public void updateSubjectAchievement(String subjectId, String deedId, LocalDateTime completeTime) {
-        Subject subject = subjectApplication.getSubjectById(subjectId);
-        List<Achievement> achievements = getAllAchievements();
-        List<SubjectAchievement> subjectAchievements = subject.getSubjectAchievements();
-        Integer achievementPoints = subject.getAchievementPoints();
-        for(SubjectAchievement subjectAchievement : subjectAchievements) {
-            if(!subjectAchievement.getIsAccomplished()) {
-                if(subjectAchievement.getProgress().containsKey(deedId)) {
-                    PUBLISH(new SubjectAchievementUpdated(subjectAchievement));
-                }
+        List<Achievement> achievements = getUnaccomplishedRelatedDeedAchievements(subjectId, deedId);
+        for(Achievement achievement : achievements) {
+            if(subjectDeedApplication.isMeetAchievementRequirements(subjectId, achievement.getId())) {
+                SubjectAchievement subjectAchievement = new SubjectAchievement();
+                subjectAchievement.setId(UUID.randomUUID().toString());
+                subjectAchievement.setSubjectId(subjectId);
+                subjectAchievement.setAchievementId(achievement.getId());
+                subjectAchievement.setAccomplishTime(completeTime);
+                double consumptionPoints = achievement.getPoints() * consumptionApplication.getExchangeRate(subjectId);
+                PublishEvent(new SubjectAchievementAccomplished(this, subjectId, achievement.getPoints(), consumptionPoints, subjectAchievement));
+            }
+
+        }
+    }
+
+    @Override
+    public void reviewSubjectAchievement(String subjectDeedId) {
+        SubjectDeed subjectDeed = subjectDeedApplication.getSubjectDeedById(subjectDeedId);
+        List<Achievement> achievements = getAccomplishedRelatedDeedAchievements(subjectDeed.getSubjectId(), subjectDeed.getDeedId());
+        for(Achievement achievement : achievements) {
+            if(!subjectDeedApplication.isMeetAchievementRequirements(subjectDeed.getSubjectId(), achievement.getId())) {
+                SubjectAchievement subjectAchievement = subjectAchievementApplication.
+                        getSubjectAchievementByAchievementId(subjectDeed.getSubjectId(), achievement.getId());
+                PublishEvent(new SubjectAchievementRevoked(this, subjectAchievement));
             }
         }
     }
 
     @Override
     public List<Achievement> getAllAchievements() {
+        return null;
+    }
+
+    @Override
+    public List<Achievement> getUnaccomplishedRelatedDeedAchievements(String subjectId, String deedId) {
+        return null;
+    }
+
+    @Override
+    public List<Achievement> getAccomplishedRelatedDeedAchievements(String subjectId, String deedId) {
         return null;
     }
 

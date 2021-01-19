@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDateTime;
-import java.util.Map;
 
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -16,10 +15,6 @@ public class SubjectAchievement {
     String subjectId;
 
     String achievementId;
-
-    Map<String, Integer> progress;
-
-    Boolean isAccomplished;
 
     LocalDateTime accomplishTime;
 }

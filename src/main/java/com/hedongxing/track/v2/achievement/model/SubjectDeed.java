@@ -14,6 +14,8 @@ public class SubjectDeed {
 
     String subjectId;
 
+    String deedId;
+
     LocalDateTime completeTime;
 
 }

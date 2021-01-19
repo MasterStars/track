@@ -1,8 +1,9 @@
 package com.hedongxing.track.v2.deed.model.event;
 
+import com.hedongxing.track.v2.infrastructure.support.DomainEvent;
 import org.springframework.context.ApplicationEvent;
 
-public class SubjectDeedInvalidConfirmed extends ApplicationEvent {
+public class SubjectDeedInvalidConfirmed extends DomainEvent {
     /**
      * Create a new {@code ApplicationEvent}.
      *

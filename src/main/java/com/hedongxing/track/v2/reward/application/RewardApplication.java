@@ -13,7 +13,7 @@ public interface RewardApplication {
      * @param rewardId 奖励ID
      * @param applyTime 申请时间
      */
-    void applyAchievementReward(String subjectId, String rewardId, LocalDateTime applyTime);
+    void applyAchievementPointsReward(String subjectId, String rewardId, LocalDateTime applyTime);
 
     /**
      * 主角领取成就积分奖励
@@ -21,7 +21,7 @@ public interface RewardApplication {
      * @param rewardId 奖励ID
      * @param receiveTime 领取时间
      */
-    void receiveAchievementReward(String subjectId, String rewardId, LocalDateTime receiveTime);
+    void receiveAchievementPointsReward(String subjectId, String rewardId, LocalDateTime receiveTime);
 
     /**
      * 下发成就奖励
@@ -30,7 +30,7 @@ public interface RewardApplication {
      * @param rewardId 奖励ID
      * @param releaseTime 下发时间
      */
-    void releaseAchievementReward(String rewardReleaserId, String subjectId, String rewardId, LocalDateTime releaseTime);
+    void releaseAchievementPointsReward(String rewardReleaserId, String subjectId, String rewardId, LocalDateTime releaseTime);
 
     /**
      * 主角申请兑换奖励
@@ -56,7 +56,7 @@ public interface RewardApplication {
      */
     void releaseExchangeReward(String rewardReleaserId, String subjectId, String rewardId, LocalDateTime releaseTime);
 
-    AchievementPointsReward getAchievementRewardById(String rewardId);
+    AchievementPointsReward getAchievementPointsRewardById(String rewardId);
 
     ExchangeReward getExchangeRewardById(String rewardId);
 }

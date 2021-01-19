@@ -13,6 +13,12 @@ import java.time.LocalDateTime;
 @Builder
 public class SubjectDeed {
 
+    public static final Integer PLACED = 1;
+
+    public static final Integer VALID = 2;
+
+    public static final Integer INVALID = 3;
+
     String id;
 
     String subjectId;

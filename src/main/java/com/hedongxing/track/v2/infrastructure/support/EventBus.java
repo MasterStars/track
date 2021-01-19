@@ -3,18 +3,19 @@ package com.hedongxing.track.v2.infrastructure.support;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.context.ApplicationEvent;
 
-public class EventPublisher implements ApplicationContextAware {
+public class EventBus implements ApplicationContextAware {
 
     private static ApplicationContext applicationContext;
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        EventPublisher.applicationContext = applicationContext;
+        EventBus.applicationContext = applicationContext;
     }
 
-    public static void PUBLISH(ApplicationEvent event) {
+    public static void PublishEvent(DomainEvent event) {
         applicationContext.publishEvent(event);
     }
+
+    public static void PublishMessage(Message message) {applicationContext.publishEvent(message);}
 }

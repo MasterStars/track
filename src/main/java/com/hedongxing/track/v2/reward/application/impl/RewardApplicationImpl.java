@@ -12,7 +12,8 @@ import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
 
-import static com.hedongxing.track.v2.infrastructure.support.EventPublisher.PUBLISH;
+import static com.hedongxing.track.v2.infrastructure.support.EventBus.PublishEvent;
+
 
 @RequiredArgsConstructor
 public class RewardApplicationImpl implements RewardApplication {
@@ -22,12 +23,12 @@ public class RewardApplicationImpl implements RewardApplication {
     private final SubjectApplication subjectApplication;
 
     @Override
-    public void applyAchievementReward(String subjectId, String rewardId, LocalDateTime applyTime) {
+    public void applyAchievementPointsReward(String subjectId, String rewardId, LocalDateTime applyTime) {
         if(!subjectRewardApplication.hasReceivedAchievementReward(subjectId, rewardId)){
-            AchievementPointsReward achievementPointsReward = getAchievementRewardById(rewardId);
+            AchievementPointsReward achievementPointsReward = getAchievementPointsRewardById(rewardId);
             Subject subject = subjectApplication.getSubjectById(subjectId);
             if(subject.getAchievementPoints() > achievementPointsReward.getAchievementPoints()) {
-                PUBLISH(new AchievementRewardApplied(achievementPointsReward));
+                PublishEvent(new AchievementRewardApplied(this, achievementPointsReward, applyTime));
             }
         }
 
@@ -35,12 +36,13 @@ public class RewardApplicationImpl implements RewardApplication {
     }
 
     @Override
-    public void receiveAchievementReward(String subjectId, String rewardId, LocalDateTime receiveTime) {
+    public void receiveAchievementPointsReward(String subjectId, String rewardId, LocalDateTime receiveTime) {
+
 
     }
 
     @Override
-    public void releaseAchievementReward(String rewardReleaserId, String subjectId, String rewardId, LocalDateTime releaseTime) {
+    public void releaseAchievementPointsReward(String rewardReleaserId, String subjectId, String rewardId, LocalDateTime releaseTime) {
 
     }
 
@@ -49,7 +51,7 @@ public class RewardApplicationImpl implements RewardApplication {
         ExchangeReward exchangeReward = getExchangeRewardById(rewardId);
         Subject subject = subjectApplication.getSubjectById(subjectId);
         if(subject.getConsumptionPoints() > exchangeReward.getConsumptionPoints()) {
-            PUBLISH(new ExchangeRewardApplied(exchangeReward));
+            PublishEvent(new ExchangeRewardApplied(this, exchangeReward, applyTime));
         }
     }
 
@@ -65,7 +67,7 @@ public class RewardApplicationImpl implements RewardApplication {
 
 
     @Override
-    public AchievementPointsReward getAchievementRewardById(String rewardId) {
+    public AchievementPointsReward getAchievementPointsRewardById(String rewardId) {
         return null;
     }
 

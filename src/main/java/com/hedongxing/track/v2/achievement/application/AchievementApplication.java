@@ -8,14 +8,20 @@ import java.util.List;
 public interface AchievementApplication {
 
     /**
-     * 更新主角的成就
+     * 初始化主角的成就
      * @param subjectId
      */
     void initSubjectAchievement(String subjectId);
 
     void updateSubjectAchievement(String subjectId, String deedId, LocalDateTime completeTime);
 
+    void reviewSubjectAchievement(String subjectDeedId);
+
     List<Achievement> getAllAchievements();
+
+    List<Achievement> getUnaccomplishedRelatedDeedAchievements(String subjectId, String deedId);
+
+    List<Achievement> getAccomplishedRelatedDeedAchievements(String subjectId, String deedId);
 
     Achievement getAchievementById(String achievementId);
 }

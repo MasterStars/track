@@ -1,15 +1,21 @@
 package com.hedongxing.track.v2.deed.model.event;
 
-import org.springframework.context.ApplicationEvent;
+import com.hedongxing.track.v2.deed.model.SubjectDeed;
+import com.hedongxing.track.v2.infrastructure.support.DomainEvent;
+import lombok.Getter;
 
-public class SubjectDeedValidConfirmed extends ApplicationEvent {
+@Getter
+public class SubjectDeedValidConfirmed extends DomainEvent {
+
+    private SubjectDeed subjectDeed;
     /**
      * Create a new {@code ApplicationEvent}.
      *
      * @param source the object on which the event initially occurred or with
      *               which the event is associated (never {@code null})
      */
-    public SubjectDeedValidConfirmed(Object source) {
+    public SubjectDeedValidConfirmed(Object source, SubjectDeed subjectDeed) {
         super(source);
+        this.subjectDeed = subjectDeed;
     }
 }
