@@ -4,28 +4,21 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
+import java.time.LocalDate;
+
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class AchievementPO {
+public class GlobalUserInfoPO {
 
     String id;
 
-    String kitSerialNumber;
-
-    String categoryId;
-
     String name;
 
-    String description;
+    LocalDate birthday;
 
-    Integer points;
+    Integer sex;
 
-    Integer minAge;
+    String phone;
 
-    Integer maxAge;
-
-    Integer daysLimitToComplete;
-
-    Integer sexLimit;
-
+    String email;
 }

@@ -6,13 +6,13 @@ import lombok.experimental.FieldDefaults;
 
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CategoryPO {
+public class ExchangeRewardPO {
 
     String id;
 
-    String kitSerialNumber;
+    String tenantId;
 
-    String parentId;
+    Double consumptionPoints;
 
-    String name;
+    String rewardId;
 }

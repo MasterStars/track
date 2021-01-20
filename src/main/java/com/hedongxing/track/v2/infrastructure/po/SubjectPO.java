@@ -6,13 +6,22 @@ import lombok.experimental.FieldDefaults;
 
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CategoryPO {
+public class SubjectPO {
 
     String id;
 
-    String kitSerialNumber;
+    String tenantId;
 
-    String parentId;
+    String userId;
 
-    String name;
+    String nickname;
+
+    //家庭内称谓
+    String title;
+
+    Integer achievementPoints;
+
+    Double consumptionPoints;
+
+
 }

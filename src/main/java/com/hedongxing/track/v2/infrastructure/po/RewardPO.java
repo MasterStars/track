@@ -6,26 +6,14 @@ import lombok.experimental.FieldDefaults;
 
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class AchievementPO {
+public class RewardPO {
 
     String id;
 
-    String kitSerialNumber;
-
-    String categoryId;
+    String tenantId;
 
     String name;
 
-    String description;
-
-    Integer points;
-
-    Integer minAge;
-
-    Integer maxAge;
-
-    Integer daysLimitToComplete;
-
-    Integer sexLimit;
+    Double consumptionPoints;
 
 }

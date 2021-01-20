@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class SubjectDeedPO {
+public class SubjectExchangeRewardPO {
 
     String id;
 
@@ -16,21 +16,13 @@ public class SubjectDeedPO {
 
     String subjectId;
 
-    String deedId;
+    String exchangeRewardId;
 
-    Integer status;
+    Double consumptionPoints;
 
-    String submitterId;
+    LocalDateTime applyTime;
 
-    //事迹提交时间
-    LocalDateTime submitTime;
+    LocalDateTime releaseTime;
 
-    //事迹完成时间
-    LocalDateTime completeTime;
-
-    //事迹确认时间
-    LocalDateTime confirmTime;
-
-    String attachments;
-
+    LocalDateTime receiveTime;
 }
