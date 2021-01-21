@@ -4,19 +4,17 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UserPO {
+public class TenantAchievementKitPO {
 
     String id;
 
-    String globalId;
-
     String tenantId;
 
-    String nickname;
+    String kitSerialNumber;
 
-    String title;
+    LocalDateTime expireTime;
 }

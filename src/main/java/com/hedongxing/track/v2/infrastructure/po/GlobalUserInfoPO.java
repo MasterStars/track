@@ -12,6 +12,10 @@ public class GlobalUserInfoPO {
 
     String id;
 
+    String account;
+
+    String password;
+
     String name;
 
     LocalDate birthday;
