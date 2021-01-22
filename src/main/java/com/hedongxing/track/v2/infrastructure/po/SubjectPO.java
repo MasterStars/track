@@ -14,11 +14,6 @@ public class SubjectPO {
 
     String userId;
 
-    String nickname;
-
-    //家庭内称谓
-    String title;
-
     Integer achievementPoints;
 
     Double consumptionPoints;

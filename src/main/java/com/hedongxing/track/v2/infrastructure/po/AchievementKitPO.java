@@ -14,6 +14,8 @@ public class AchievementKitPO {
 
     String description;
 
+    String createrId;
+
     //1,官方;2,自定义
     Integer type;
 

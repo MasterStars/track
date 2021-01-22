@@ -6,12 +6,11 @@ import lombok.experimental.FieldDefaults;
 
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class SupervisorPO {
+public class AchievementPointsConsumptionPointsRatePO {
 
     String id;
 
     String tenantId;
 
-    String userId;
-
+    Double rate;
 }

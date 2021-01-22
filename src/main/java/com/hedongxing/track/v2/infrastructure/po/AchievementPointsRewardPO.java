@@ -17,10 +17,4 @@ public class AchievementPointsRewardPO {
     Integer achievementPoints;
 
     String rewardId;
-
-    LocalDateTime applyTime;
-
-    LocalDateTime releaseTime;
-
-    LocalDateTime receiveTime;
 }

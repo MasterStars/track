@@ -14,5 +14,4 @@ public class RewardReleaserPO {
 
     String userId;
 
-    String title;
 }

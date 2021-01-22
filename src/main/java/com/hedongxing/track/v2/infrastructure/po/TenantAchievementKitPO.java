@@ -12,6 +12,9 @@ public class TenantAchievementKitPO {
 
     String id;
 
+    //
+    String globalUserId;
+
     String tenantId;
 
     String kitSerialNumber;

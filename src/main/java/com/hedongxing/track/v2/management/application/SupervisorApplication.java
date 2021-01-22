@@ -5,14 +5,11 @@ import java.util.List;
 public interface SupervisorApplication {
 
     /**
-     * 设置监察人
-     * @param id 监察人ID
-     * @param tenantId 租户ID
-     * @param subjectId 所监察的主角ID
-     * @param name 名称
-     * @param title （主角对监察者的）称呼
+     * 添加监察人
+     * @param tenantId
+     * @param userId
      */
-    void setSupervisor(String id, String tenantId, String subjectId, String name, String title);
+    void addSupervisor(String tenantId, String userId);
 
     /**
      * 获取主角的监察人列表

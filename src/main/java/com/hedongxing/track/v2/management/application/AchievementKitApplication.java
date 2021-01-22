@@ -4,13 +4,12 @@ public interface AchievementKitApplication {
 
     /**
      * 创建成就套件(租户内可见)
-     * @param tenantId
-     * @param userId
-     * @param serialNumber 序列号
-     * @param name 套件名称
-     * @param description 套件描述
+     * @param globalUserId
+     * @param serialNumber
+     * @param name
+     * @param description
      */
-    void createAchievementKit(String tenantId, String userId, String serialNumber, String name, String description);
+    void createAchievementKit(String globalUserId, String serialNumber, String name, String description);
 
     /**
      * 创建官方套件（全平台可见）
@@ -18,5 +17,12 @@ public interface AchievementKitApplication {
      * @param name
      * @param description
      */
-    void createOfficalAchievementKit(String serialNumber, String name, String description);
+    void createOfficalAchievementKit(String globalUserId, String serialNumber, String name, String description);
+
+    /**
+     * 发布自己的套件
+     * @param globalUserId
+     * @param serialNumber
+     */
+    void publishAchievementKit(String globalUserId, String serialNumber);
 }

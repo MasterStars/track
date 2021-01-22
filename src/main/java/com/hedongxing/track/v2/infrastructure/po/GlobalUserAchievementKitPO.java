@@ -6,12 +6,11 @@ import lombok.experimental.FieldDefaults;
 
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class SupervisorPO {
+public class GlobalUserAchievementKitPO {
 
     String id;
 
-    String tenantId;
+    String globalUserId;
 
-    String userId;
-
+    String kitSerialNumber;
 }
