@@ -12,6 +12,8 @@ public class SubjectDeedPO {
 
     String id;
 
+    String tenantId;
+
     String subjectId;
 
     String deedId;

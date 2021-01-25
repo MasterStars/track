@@ -10,18 +10,17 @@ public interface RewardApplication {
     /**
      * 主角申请领取成就分数奖励
      * @param subjectId 主角ID
-     * @param achievementPoints 奖励分数
+     * @param achievementPointsId 奖励分数
      * @param applyTime 申请时间
      */
-    void applyAchievementPointsReward(String subjectId, Integer achievementPoints, LocalDateTime applyTime);
+    void applyAchievementPointsReward(String subjectId, String achievementPointsId, LocalDateTime applyTime);
 
     /**
      * 主角领取成就积分奖励
-     * @param subjectId 主角ID
-     * @param rewardId 奖励ID
+     * @param subjectAchievementPointsRewardId 奖励ID
      * @param receiveTime 领取时间
      */
-    void receiveAchievementPointsReward(String subjectId, String rewardId, LocalDateTime receiveTime);
+    void receiveAchievementPointsReward(String subjectAchievementPointsRewardId, LocalDateTime receiveTime);
 
     /**
      * 下发成就奖励

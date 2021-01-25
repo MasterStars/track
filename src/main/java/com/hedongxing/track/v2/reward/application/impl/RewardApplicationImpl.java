@@ -2,50 +2,69 @@ package com.hedongxing.track.v2.reward.application.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.hedongxing.track.v2.infrastructure.mapper.AchievementPointsRewardMapper;
+import com.hedongxing.track.v2.infrastructure.mapper.SubjectAchievementPointsRewardMapper;
+import com.hedongxing.track.v2.infrastructure.mapper.SubjectMapper;
 import com.hedongxing.track.v2.infrastructure.po.AchievementPointsRewardPO;
+import com.hedongxing.track.v2.infrastructure.po.SubjectAchievementPointsRewardPO;
+import com.hedongxing.track.v2.infrastructure.po.SubjectPO;
 import com.hedongxing.track.v2.reward.application.RewardApplication;
-import com.hedongxing.track.v2.reward.application.SubjectApplication;
-import com.hedongxing.track.v2.reward.application.SubjectRewardApplication;
 import com.hedongxing.track.v2.reward.model.AchievementPointsReward;
 import com.hedongxing.track.v2.reward.model.ExchangeReward;
-import com.hedongxing.track.v2.reward.model.Subject;
-import com.hedongxing.track.v2.reward.model.event.AchievementRewardApplied;
-import com.hedongxing.track.v2.reward.model.event.ExchangeRewardApplied;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
-import static com.hedongxing.track.v2.infrastructure.support.EventBus.PublishEvent;
-
-
+@Service
 @RequiredArgsConstructor
 public class RewardApplicationImpl implements RewardApplication {
 
-    private final SubjectRewardApplication subjectRewardApplication;
-
-    private final SubjectApplication subjectApplication;
+    private final SubjectMapper subjectMapper;
 
     private final AchievementPointsRewardMapper achievementPointsRewardMapper;
 
+    private final SubjectAchievementPointsRewardMapper subjectAchievementPointsRewardMapper;
+
     @Override
-    public void applyAchievementPointsReward(String subjectId, Integer achievementPoints, LocalDateTime applyTime) {
-        if(!subjectRewardApplication.hasReceivedAchievementPointsReward(subjectId, achievementPoints)){
-            Subject subject = subjectApplication.getSubjectById(subjectId);
+    public void applyAchievementPointsReward(String subjectId, String achievementPointsRewardId, LocalDateTime applyTime) {
+        SubjectPO subjectPO = subjectMapper.selectById(subjectId);
+        AchievementPointsRewardPO achievementPointsRewardPO =
+                achievementPointsRewardMapper.selectById(achievementPointsRewardId);
 
-            AchievementPointsReward achievementPointsReward = getAchievementPointsReward(subjectId, achievementPoints);
-
-            if(subject.getAchievementPoints() > achievementPointsReward.getAchievementPoints()) {
-                PublishEvent(new AchievementRewardApplied(this, achievementPointsReward, applyTime));
-            }
+        SubjectAchievementPointsRewardPO subjectAchievementPointsRewardPO =
+                subjectAchievementPointsRewardMapper.selectOne(Wrappers.<SubjectAchievementPointsRewardPO>lambdaQuery()
+                .eq(SubjectAchievementPointsRewardPO::getSubjectId, subjectId)
+                .eq(SubjectAchievementPointsRewardPO::getAchievementPointsRewardId, achievementPointsRewardId));
+        if(subjectAchievementPointsRewardPO != null) {
+            throw new RuntimeException("已经领取过" + achievementPointsRewardPO.getAchievementPoints() + "奖励");
         }
 
+        if(subjectPO.getAchievementPoints() < achievementPointsRewardPO.getAchievementPoints()) {
+            throw new RuntimeException("成就积分不足以领取奖励!");
+        }
 
+        SubjectAchievementPointsRewardPO newSubjectAchievementPointsRewardPO =
+                new SubjectAchievementPointsRewardPO();
+        newSubjectAchievementPointsRewardPO.setId(UUID.randomUUID().toString());
+        newSubjectAchievementPointsRewardPO.setAchievementPointsRewardId(achievementPointsRewardId);
+        newSubjectAchievementPointsRewardPO.setTenantId(subjectPO.getTenantId());
+        newSubjectAchievementPointsRewardPO.setSubjectId(subjectId);
+        newSubjectAchievementPointsRewardPO.setApplyTime(applyTime);
+        newSubjectAchievementPointsRewardPO.setStatus(1);
+        subjectAchievementPointsRewardMapper.insert(newSubjectAchievementPointsRewardPO);
     }
 
     @Override
-    public void receiveAchievementPointsReward(String subjectId, String rewardId, LocalDateTime receiveTime) {
-
-
+    public void receiveAchievementPointsReward(String subjectAchievementPointsRewardId, LocalDateTime receiveTime) {
+        SubjectAchievementPointsRewardPO subjectAchievementPointsRewardPO =
+                subjectAchievementPointsRewardMapper.selectById(subjectAchievementPointsRewardId);
+        if(subjectAchievementPointsRewardPO.getStatus() != 1) {
+            throw new RuntimeException("积分奖励状态不对，不能接收");
+        }
+        subjectAchievementPointsRewardPO.setStatus(2);
+        subjectAchievementPointsRewardPO.setReceiveTime(receiveTime);
+        subjectAchievementPointsRewardMapper.updateById(subjectAchievementPointsRewardPO);
     }
 
     @Override
@@ -55,11 +74,7 @@ public class RewardApplicationImpl implements RewardApplication {
 
     @Override
     public void applyExchangeReward(String subjectId, String rewardId, LocalDateTime applyTime) {
-        ExchangeReward exchangeReward = getExchangeRewardById(rewardId);
-        Subject subject = subjectApplication.getSubjectById(subjectId);
-        if(subject.getConsumptionPoints() > exchangeReward.getConsumptionPoints()) {
-            PublishEvent(new ExchangeRewardApplied(this, exchangeReward, applyTime));
-        }
+
     }
 
     @Override
@@ -72,15 +87,9 @@ public class RewardApplicationImpl implements RewardApplication {
 
     }
 
-
     @Override
     public AchievementPointsReward getAchievementPointsReward(String tenantId, Integer achievementPoints) {
-        AchievementPointsRewardPO achievementPointsRewardPO = achievementPointsRewardMapper.selectOne(
-                Wrappers.<AchievementPointsRewardPO>lambdaQuery()
-                .eq(AchievementPointsRewardPO::getTenantId, tenantId)
-                .eq(AchievementPointsRewardPO::getAchievementPoints, achievementPoints));
-        AchievementPointsReward achievementPointsReward = new AchievementPointsReward();
-        return achievementPointsReward;
+        return null;
     }
 
     @Override

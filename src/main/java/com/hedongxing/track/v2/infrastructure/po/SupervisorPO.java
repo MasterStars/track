@@ -10,6 +10,8 @@ public class SupervisorPO {
 
     String id;
 
+    String tenantId;
+
     String userId;
 
 }
