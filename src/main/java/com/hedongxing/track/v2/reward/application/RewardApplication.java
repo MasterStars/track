@@ -8,12 +8,12 @@ import java.time.LocalDateTime;
 public interface RewardApplication {
 
     /**
-     * 主角申请领取成就奖励
+     * 主角申请领取成就分数奖励
      * @param subjectId 主角ID
-     * @param rewardId 奖励ID
+     * @param achievementPoints 奖励分数
      * @param applyTime 申请时间
      */
-    void applyAchievementPointsReward(String subjectId, String rewardId, LocalDateTime applyTime);
+    void applyAchievementPointsReward(String subjectId, Integer achievementPoints, LocalDateTime applyTime);
 
     /**
      * 主角领取成就积分奖励
@@ -56,7 +56,7 @@ public interface RewardApplication {
      */
     void releaseExchangeReward(String rewardReleaserId, String subjectId, String rewardId, LocalDateTime releaseTime);
 
-    AchievementPointsReward getAchievementPointsRewardById(String rewardId);
+    AchievementPointsReward getAchievementPointsReward(String tenantId, Integer achievementPoints);
 
     ExchangeReward getExchangeRewardById(String rewardId);
 }

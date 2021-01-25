@@ -11,12 +11,15 @@ import java.time.LocalDateTime;
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
-public class SubjectDeed {
+public class  SubjectDeed {
 
+    //已提交
     public static final Integer PLACED = 1;
 
+    //已确认有效
     public static final Integer VALID = 2;
 
+    //已确认无效
     public static final Integer INVALID = 3;
 
     String id;
@@ -25,12 +28,9 @@ public class SubjectDeed {
 
     String deedId;
 
-    //1:已提交，2；已确认有效，3：已确认无效
-    Integer status;
-
-    LocalDateTime completeTime;
-
-    LocalDateTime submitTime;
+    String submitterId;
 
     String attachments;
+
+    Integer status;
 }

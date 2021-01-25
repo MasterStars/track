@@ -12,8 +12,6 @@ public class ReleaseRecordPO {
 
     String id;
 
-    String tenantId;
-
     String subjectId;
 
     String releaserId;

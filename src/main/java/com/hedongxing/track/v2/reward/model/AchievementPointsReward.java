@@ -13,7 +13,7 @@ public class AchievementPointsReward {
 
     String id;
 
-    String name;
+    String rewardId;
 
     Integer achievementPoints;
 }

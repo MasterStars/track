@@ -27,27 +27,25 @@ public class DeedApplicationImpl implements DeedApplication {
     private final SubjectDeedApplication subjectDeedApplication;
 
     @Override
-    public void submitDeed(String submitterId, String subjectId, String deedId, LocalDateTime completeTime) {
+    public void submitDeed(String submitterId, String subjectId, String deedId, String attachments, LocalDateTime completeTime) {
         SubjectDeed subjectDeed;
         if(submitterIsSubject(submitterId, subjectId)){
             subjectDeed = SubjectDeed.builder()
                     .id(UUID.randomUUID().toString())
                     .subjectId(subjectId)
                     .deedId(deedId)
-                    .status(1)
-                    .completeTime(completeTime)
-                    .submitTime(LocalDateTime.now()).build();
-            PublishEvent(new SubjectDeedSubmitted(this, subjectDeed));
+                    .submitterId(submitterId)
+                    .build();
+            PublishEvent(new SubjectDeedSubmitted(this, subjectDeed, completeTime, LocalDateTime.now()));
         }else if(submitterIsRewardReleaser(submitterId, subjectId)) {
             subjectDeed = SubjectDeed.builder()
                     .id(UUID.randomUUID().toString())
                     .subjectId(subjectId)
                     .deedId(deedId)
-                    .status(2)
-                    .completeTime(completeTime)
-                    .submitTime(LocalDateTime.now()).build();
-            PublishEvent(new SubjectDeedSubmitted(this, subjectDeed));
-            PublishEvent(new SubjectDeedValidConfirmed(this, subjectDeed));
+                    .submitterId(submitterId)
+                    .build();
+            PublishEvent(new SubjectDeedSubmitted(this, subjectDeed, completeTime, LocalDateTime.now()));
+            PublishEvent(new SubjectDeedValidConfirmed(this, subjectDeed, LocalDateTime.now()));
         }
 
     }
@@ -65,7 +63,7 @@ public class DeedApplicationImpl implements DeedApplication {
     public void confirmDeedValid(String subjectDeedId, String rewardReleaserId, LocalDateTime confirmTime) {
         SubjectDeed subjectDeed = subjectDeedApplication.getSubjectDeedById(subjectDeedId);
         if(subjectDeed.getStatus() == 1) {
-            PublishEvent(new SubjectDeedValidConfirmed(this, subjectDeed));
+            PublishEvent(new SubjectDeedValidConfirmed(this, subjectDeed, confirmTime));
         }
     }
 
@@ -73,7 +71,7 @@ public class DeedApplicationImpl implements DeedApplication {
     public void confirmDeedInvalid(String subjectDeedId, String rewardReleaserId, String reason, LocalDateTime confirmTime) {
         SubjectDeed subjectDeed = subjectDeedApplication.getSubjectDeedById(subjectDeedId);
         if(subjectDeed.getStatus() == 1) {
-            PublishEvent(new SubjectDeedInvalidConfirmed(subjectDeed));
+            PublishEvent(new SubjectDeedInvalidConfirmed(this, subjectDeed));
         }
     }
 
@@ -83,7 +81,7 @@ public class DeedApplicationImpl implements DeedApplication {
         List<String> supervisorIds = supervisorApplication.getSupervisorsOfSubject(subjectDeed.getSubjectId());
         if(supervisorIds.contains(supervisorId) &&
                 subjectDeed.getStatus() == 2) {
-            PublishEvent(new SubjectDeedInvalidReset(subjectDeed));
+            PublishEvent(new SubjectDeedInvalidReset(this, subjectDeed));
         }
     }
 }

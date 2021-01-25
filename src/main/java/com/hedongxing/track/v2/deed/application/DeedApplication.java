@@ -9,9 +9,10 @@ public interface DeedApplication {
      * @param submitterId 提交人ID
      * @param subjectId 主角ID
      * @param deedId 事迹ID
+     * @param attachments 附件
      * @param completeTime 事迹完成时间
      */
-    void submitDeed(String submitterId, String subjectId, String deedId, LocalDateTime completeTime);
+    void submitDeed(String submitterId, String subjectId, String deedId, String attachments, LocalDateTime completeTime);
 
     /**
      * 奖励发放人确认事迹有效

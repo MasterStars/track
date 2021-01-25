@@ -12,12 +12,11 @@ public class SubjectDeedPO {
 
     String id;
 
-    String tenantId;
-
     String subjectId;
 
     String deedId;
 
+    //1，已提交；2，
     Integer status;
 
     String submitterId;

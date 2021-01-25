@@ -19,6 +19,12 @@ public interface AchievementApplication {
 
     List<Achievement> getAllAchievements();
 
+    /**
+     * 获取主角的与指定事迹相关的未完成成就
+     * @param subjectId
+     * @param deedId
+     * @return
+     */
     List<Achievement> getUnaccomplishedRelatedDeedAchievements(String subjectId, String deedId);
 
     List<Achievement> getAccomplishedRelatedDeedAchievements(String subjectId, String deedId);

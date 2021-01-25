@@ -42,6 +42,11 @@ public class AchievementKitApplicationImpl implements AchievementKitApplication 
     }
 
     @Override
+    public List<AchievementKitPO> findGlobalUserOwnedKits(String globalUserId) {
+        return achievementKitMapper.selectAchievementKitsByGlobalUserId(globalUserId);
+    }
+
+    @Override
     public void createOfficalAchievementKit(String globalUserId, String serialNumber, String name, String description) {
         AchievementKitPO achievementKitPO = new AchievementKitPO();
         achievementKitPO.setCreaterId(globalUserId);

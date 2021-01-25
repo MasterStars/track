@@ -19,7 +19,6 @@ public class SupervisorApplicationImpl implements SupervisorApplication {
     public void addSupervisor(String tenantId, String userId) {
         SupervisorPO supervisorPO = new SupervisorPO();
         supervisorPO.setId(UUID.randomUUID().toString());
-        supervisorPO.setTenantId(tenantId);
         supervisorPO.setUserId(userId);
         supervisorMapper.insert(supervisorPO);
     }

@@ -10,8 +10,6 @@ public class RewardReleaserPO {
 
     String id;
 
-    String tenantId;
-
     String userId;
 
 }

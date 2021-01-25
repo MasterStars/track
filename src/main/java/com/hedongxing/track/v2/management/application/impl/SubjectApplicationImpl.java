@@ -21,7 +21,6 @@ public class SubjectApplicationImpl implements SubjectApplication {
         subjectPO.setAchievementPoints(0);
         subjectPO.setConsumptionPoints(0.0);
         subjectPO.setUserId(userId);
-        subjectPO.setTenantId(tenantId);
         subjectMapper.insert(subjectPO);
     }
 }

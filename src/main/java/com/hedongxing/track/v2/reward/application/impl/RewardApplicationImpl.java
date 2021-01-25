@@ -1,5 +1,8 @@
 package com.hedongxing.track.v2.reward.application.impl;
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.hedongxing.track.v2.infrastructure.mapper.AchievementPointsRewardMapper;
+import com.hedongxing.track.v2.infrastructure.po.AchievementPointsRewardPO;
 import com.hedongxing.track.v2.reward.application.RewardApplication;
 import com.hedongxing.track.v2.reward.application.SubjectApplication;
 import com.hedongxing.track.v2.reward.application.SubjectRewardApplication;
@@ -22,11 +25,15 @@ public class RewardApplicationImpl implements RewardApplication {
 
     private final SubjectApplication subjectApplication;
 
+    private final AchievementPointsRewardMapper achievementPointsRewardMapper;
+
     @Override
-    public void applyAchievementPointsReward(String subjectId, String rewardId, LocalDateTime applyTime) {
-        if(!subjectRewardApplication.hasReceivedAchievementReward(subjectId, rewardId)){
-            AchievementPointsReward achievementPointsReward = getAchievementPointsRewardById(rewardId);
+    public void applyAchievementPointsReward(String subjectId, Integer achievementPoints, LocalDateTime applyTime) {
+        if(!subjectRewardApplication.hasReceivedAchievementPointsReward(subjectId, achievementPoints)){
             Subject subject = subjectApplication.getSubjectById(subjectId);
+
+            AchievementPointsReward achievementPointsReward = getAchievementPointsReward(subjectId, achievementPoints);
+
             if(subject.getAchievementPoints() > achievementPointsReward.getAchievementPoints()) {
                 PublishEvent(new AchievementRewardApplied(this, achievementPointsReward, applyTime));
             }
@@ -67,8 +74,13 @@ public class RewardApplicationImpl implements RewardApplication {
 
 
     @Override
-    public AchievementPointsReward getAchievementPointsRewardById(String rewardId) {
-        return null;
+    public AchievementPointsReward getAchievementPointsReward(String tenantId, Integer achievementPoints) {
+        AchievementPointsRewardPO achievementPointsRewardPO = achievementPointsRewardMapper.selectOne(
+                Wrappers.<AchievementPointsRewardPO>lambdaQuery()
+                .eq(AchievementPointsRewardPO::getTenantId, tenantId)
+                .eq(AchievementPointsRewardPO::getAchievementPoints, achievementPoints));
+        AchievementPointsReward achievementPointsReward = new AchievementPointsReward();
+        return achievementPointsReward;
     }
 
     @Override

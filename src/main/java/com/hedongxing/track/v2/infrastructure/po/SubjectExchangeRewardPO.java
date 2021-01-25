@@ -12,8 +12,6 @@ public class SubjectExchangeRewardPO {
 
     String id;
 
-    String tenantId;
-
     String subjectId;
 
     String exchangeRewardId;

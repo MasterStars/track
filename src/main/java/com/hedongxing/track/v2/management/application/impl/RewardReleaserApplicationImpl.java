@@ -20,7 +20,6 @@ public class RewardReleaserApplicationImpl implements RewardReleaserApplication 
     public void addRewardReleaser(String tenantId, String userId) {
         RewardReleaserPO rewardReleaserPO = new RewardReleaserPO();
         rewardReleaserPO.setId(UUID.randomUUID().toString());
-        rewardReleaserPO.setTenantId(tenantId);
         rewardReleaserPO.setUserId(userId);
         rewardReleaserMapper.insert(rewardReleaserPO);
     }

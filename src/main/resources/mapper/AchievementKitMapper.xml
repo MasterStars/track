@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hedongxing.track.v2.infrastructure.mapper.AchievementKitMapper">
+    <select id="selectAchievementKitsByGlobalUserId" resultType="com.hedongxing.track.v2.infrastructure.po.AchievementKitPO">
+        SELECT *
+        FROM achievement_kit ak
+        LEFT JOIN global_user_achievement_kit guak
+        ON ak.kit_serial_number = guak.kit_serial_number
+        WHERE guak.global_user_id=#{globalUserId}
+    </select>
+</mapper>

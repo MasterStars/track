@@ -10,8 +10,6 @@ public class SubjectPO {
 
     String id;
 
-    String tenantId;
-
     String userId;
 
     Integer achievementPoints;

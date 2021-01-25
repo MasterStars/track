@@ -12,8 +12,6 @@ public class SubjectAchievementPointsRewardPO {
 
     String id;
 
-    String tenantId;
-
     String subjectId;
 
     String achievementPointsRewardId;
